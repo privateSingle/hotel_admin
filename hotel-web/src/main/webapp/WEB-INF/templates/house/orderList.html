@@ -134,7 +134,7 @@
                 <label class="layui-form-label">订单状态</label>
                 <div class="layui-input-inline" style="margin-right: 30px;">
                     <select name="orderStatus" id="varieties">
-                        <option value="">请选择房间状态</option>
+                        <option value="">请选择场地状态</option>
                         <option value="0">已预订</option>
                         <option value="1">已完成</option>
                         <option value="2">已取消</option>
@@ -192,7 +192,7 @@
                     [
                         {field: 'orderCode',title: '订单号', fixed: 'left', unresize: true, sort: true,templet:'<div>{{d.orderCode}}</div>'}
                         , {field: '', title: '客人姓名', sort: true,templet:'<div>{{d.client.name}}</div>'}
-                        , {field: 'reserverCount', title: '预定房间数', sort: true,templet:'<div>{{d.reserverCount}}</div>'}
+                        , {field: 'reserverCount', title: '预定场地数', sort: true,templet:'<div>{{d.reserverCount}}</div>'}
                         , {field: 'money', title: '订单价格', sort: true,templet:'<div>￥{{d.money/100}}</div>'}
                         , {field: 'create_date', title: '订单创建时间', sort: true,templet:'<div>{{d.createDate}}</div>'}
                         , {field: 'order_status', title: '订单状态', sort: true,templet:'<div>{{d.orderStatus==0?"已预定":d.orderStatus==1?"已完成":d.orderStatus==2?"已取消":"已入住"}}</div>'}
@@ -228,7 +228,7 @@
                 case 'allot':
                     layer.open({
                         type: 2,
-                        title: '客房状态信息',
+                        title: '场地状态信息',
                         shadeClose: true,
                         shade: 0.3,
                         maxmin: true, //开启最大化最小化按钮

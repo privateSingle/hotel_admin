@@ -1,8 +1,5 @@
 package cn.li.pojo;
 
-import java.util.Date;
-import java.util.List;
-
 import lombok.Data;
 
  /**
@@ -12,7 +9,7 @@ import lombok.Data;
   * @comment: null
   */
 @Data
-public class Purchase {
+public class Purchase  {
     /**
     * 采购ID
     */

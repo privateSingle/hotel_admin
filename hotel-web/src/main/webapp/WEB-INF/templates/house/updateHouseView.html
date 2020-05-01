@@ -45,16 +45,16 @@
 <body style="height: 100%">
 <!--该隐藏字段为了标识本次新增的内容是什么-->
 <input type="hidden" id="add-type" th:value="${type}">
-<!-- -------------------------------------------------------修改客房类型信息 Start------------------------------------------------------- -->
+<!-- -------------------------------------------------------修改场地类型信息 Start------------------------------------------------------- -->
 <!--表单-->
 <form class="layui-form layui-form-pane form-info addForm" th:if="${type=='houseType'}" action="" add-url="updateHouseType">
     <input type="hidden" th:value="${houseType.id}" name="id">
     <div id="product_info" style="width:100%">
         <div class="layui-form-item">
             <div class="layui-form-item">
-                <label class="layui-form-label">客房类型</label>
+                <label class="layui-form-label">场地类型</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="typeName" lay-verify="required" placeholder="请输入客房类型" autocomplete="off"
+                    <input type="text" name="typeName" lay-verify="required" placeholder="请输入场地类型" autocomplete="off"
                      th:value="${houseType.TypeName}"      class="layui-input">
                 </div>
             </div>
@@ -62,15 +62,15 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">价格</label>
                 <div class="layui-input-inline">
-                    <input type="number" name="price" lay-verify="required" placeholder="请输入客房类型价格" autocomplete="off"
+                    <input type="number" name="price" lay-verify="required" placeholder="请输入场地类型价格" autocomplete="off"
                            th:value="${houseType.price/100}"  class="layui-input">
                 </div>
             </div>
 
             <div class="layui-form-item">
-                <label class="layui-form-label">客房描述</label>
+                <label class="layui-form-label">场地描述</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="remark" lay-verify="required" placeholder="请输入客房类型描述" autocomplete="off"
+                    <input type="text" name="remark" lay-verify="required" placeholder="请输入场地类型描述" autocomplete="off"
                            th:value="${houseType.remark}"       class="layui-input">
                 </div>
             </div>
@@ -78,7 +78,7 @@
     </div>
 
     <div class="layui-form-item" style="margin-top:15px;width:500px;">
-        <label class="layui-form-label">客房图片</label>
+        <label class="layui-form-label">场地图片</label>
         <div class="layui-upload">
             <button type="button" class="layui-btn layui-btn-normal" id="test1" >选择图片</button>
             <div class="layui-upload-list">
@@ -94,7 +94,7 @@
     <div class="content-input">
         <input type="button" value="修改" name="submit" class="layui-btn addBtn"  id="submitBtn">
     </div>
-    <!-- -------------------------------------------------------修改客房类型信息 END------------------------------------------------------- -->
+    <!-- -------------------------------------------------------修改场地类型信息 END------------------------------------------------------- -->
 </form>
 
 
@@ -128,7 +128,7 @@
             switch(type){
                 case "houseType":
                     if (result == "success") {
-                        layer.confirm('修改客房类型信息成功！',{
+                        layer.confirm('修改场地类型信息成功！',{
                             btn:['确定']  //按钮
                             , skin: 'layui-layer-lan'
                             , icon: 6
@@ -136,7 +136,7 @@
                             window.parent.location.reload();    //刷新父页面
                         });
                     } else {
-                        layer.confirm('修改客房类型信息失败！',{
+                        layer.confirm('修改场地类型信息失败！',{
                             btn:['确定']  //按钮
                             , skin: 'layui-layer-lan'
                             , icon: 5

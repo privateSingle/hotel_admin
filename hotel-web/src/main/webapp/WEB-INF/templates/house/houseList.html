@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<!--客房页面-->
+<!--场地页面-->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -114,18 +114,18 @@
     <form class="layui-form layui-form-pane" id="searchFrom" action="" style="margin-bottom: 10px;">
         <div class="layui-row" style="margin-top: 10px">
             <div class="content-input content-input-01">
-                <label class="layui-form-label">房间号</label>
+                <label class="layui-form-label">场地号</label>
                 <div class="layui-input-inline" style="margin-right: 30px;">
-                    <input type="text" name="houseCode" lay-verify="required" placeholder="请输入客房号" autocomplete="off" class="layui-input" style="width: 186px;">
+                    <input type="text" name="houseCode" lay-verify="required" placeholder="请输入场地号" autocomplete="off" class="layui-input" style="width: 186px;">
                 </div>
             </div>
 
             <div class="content-input content-input-02">
-                <!--客房类型-->
-                <label class="layui-form-label">房间类型</label>
+                <!--场地类型-->
+                <label class="layui-form-label">场地类型</label>
                 <div class="layui-input-inline" style="margin-right: 30px;">
                     <select name="houseType"  lay-filter="type" id="type">
-                        <option value="-1">请选择房间类型</option>
+                        <option value="-1">请选择场地类型</option>
                         <!-- <option th:each="type:${typeList}" th:value="${type.id}" th:text="${type.typeName}"></option>-->
                         <option th:each="type:${houseTypes}" th:value="${type.id}" th:text="${type.typeName}"></option>
                     </select>
@@ -133,15 +133,15 @@
             </div>
 
             <div class="content-input content-input-03">
-                <!--房间状态-->
-                <label class="layui-form-label">房间状态</label>
+                <!--场地状态-->
+                <label class="layui-form-label">场地状态</label>
                 <div class="layui-input-inline" style="margin-right: 30px;">
                     <select name="houseStatus" id="varieties">
-                        <option value="-1">请选择房间状态</option>
+                        <option value="-1">请选择场地状态</option>
                         <!--<option th:each="varieties:${varietiesList}" th:value="${varieties.id}" th:text="${varieties.varietiesName}"></option>
                         -->
-                        <option value="0">未入住</option>
-                        <option value="1">已入住</option>
+                        <option value="0">未入场</option>
+                        <option value="1">已入场</option>
                     </select>
                 </div>
             </div>
@@ -188,13 +188,13 @@
                 , limit: 20
                 , height: 'full-78'
                 , defaultToolbar: ['filter', 'exports', 'print']
-                , title: '客房数据表'
+                , title: '场地数据表'
                 , cols: [
                     [
                         {type: 'checkbox', fixed: 'left'}
-                        , {field: 'house_code',title: '客房号', fixed: 'left', unresize: true, sort: true,templet:'<div>{{d.houseCode}}</div>'}
-                        , {field: 'house_status', title: '房间状态',templet:'<div>{{d.houseStatus==0?"未入住":d.houseStatus==1?"已入住":d.houseStatus==2?"已预定":"将退房"}}</div>'}
-                        , {field: '', title: '客房类型', sort: true,templet:'<div>{{d.houseType.typeName}}</div>'}
+                        , {field: 'house_code',title: '场地号', fixed: 'left', unresize: true, sort: true,templet:'<div>{{d.houseCode}}</div>'}
+                        , {field: 'house_status', title: '场地状态',templet:'<div>{{d.houseStatus==0?"未入住":d.houseStatus==1?"已入住":d.houseStatus==2?"已预定":"将退房"}}</div>'}
+                        , {field: '', title: '场地类型', sort: true,templet:'<div>{{d.houseType.typeName}}</div>'}
                         , {field: 'price', title: '房价', sort: true,templet:'<div>￥{{d.houseType.price/100}}</div>'}
                         // , {field: 'caozuo', title: '操作', sort: true,toolbar:'#operationBar'}
                     ]

@@ -150,7 +150,7 @@
                     [
                         {field: 'orderCode',title: '订单号', fixed: 'left', unresize: true, sort: true,templet:'<div>{{d.orderCode}}</div>'}
                         , {field: '', title: '客人姓名', sort: true,templet:'<div>{{d.client.name}}</div>'}
-                        , {field: 'reserverCount', title: '预定房间数', sort: true,templet:'<div>{{d.reserverCount}}</div>'}
+                        , {field: 'reserverCount', title: '预定场地数', sort: true,templet:'<div>{{d.reserverCount}}</div>'}
                         , {field: 'money', title: '订单价格', sort: true,templet:'<div>￥{{d.money/100}}</div>'}
                         , {field: 'create_date', title: '订单创建时间', sort: true,templet:'<div>{{d.createDate}}</div>'}
                         , {field: 'caozuo', title: '操作', sort: true,toolbar:'#operationBar'}
@@ -196,7 +196,7 @@
                         ,area: '300px;'
                         ,shade: 0.8
                         ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
-                        ,btn: ['选择离店时间', '取消']
+                        ,btn: ['选择离开时间', '取消']
                         ,btnAlign: 'c'
                         ,moveType: 1 //拖拽模式，0或者1
                         ,content: '<div style="padding: 50px; line-height: 22px; font-weight: 200;">' +

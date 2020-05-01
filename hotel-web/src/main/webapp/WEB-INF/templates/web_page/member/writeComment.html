@@ -12,7 +12,7 @@
         <input type="hidden" th:value="${orderId}" name="orderId">
 
         <div class="layui-form-item">
-            <label class="layui-form-label" style="min-width: 150px;">入住房间类型</label>
+            <label class="layui-form-label" style="min-width: 150px;">选择场地类型</label>
             <div class="layui-input-inline">
                 <select name="houseTypeId" disabled="true">
                     <option th:each="type:${typeList}" th:value="${type.id}"

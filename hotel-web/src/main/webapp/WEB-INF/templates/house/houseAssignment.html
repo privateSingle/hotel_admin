@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>客房订单信息页面</title>
+    <title>场地订单信息页面</title>
     <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}">
     <script th:src="@{/js/jquery.min.js}"></script>
     <script th:src="@{/lib/layui/layui.js}"></script>
@@ -22,7 +22,7 @@
     <input type="hidden" id="orderId" th:value="${houseOrder.orderId}">
 
     <fieldset class="layui-elem-field site-demo-button" style="margin-top: 30px;text-align: center">
-        <legend>客房状态</legend>
+        <legend>场地状态</legend>
         <div style="margin: 8px 0">
             <button class="layui-btn statusBtn" type="button">未入住</button>
             <button class="layui-btn layui-btn-disabled statusBtn" type="button">已入住</button>
@@ -62,8 +62,8 @@
 
         $(".btnHouse").click(function () {
             var btn = $(this);
-            var houseCode =btn.text();//客房号
-            var houseOrderId=$("#houseOrderId").val();//客房订单Id
+            var houseCode =btn.text();//场地号
+            var houseOrderId=$("#houseOrderId").val();//场地订单Id
             var select = btn.attr('is-select');
             var reserveVal =  $('#reserveHouseCode').val();
             layer.confirm(select=='false'? '是否要将'+houseCode+'分配给用户？': '是否要取消'+houseCode+'的分房操作？',

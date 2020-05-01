@@ -37,14 +37,14 @@
                                     <a th:href="@{initPage}" data-hover="首页" th:if="${barType != 'index'}">首页</a>
                                 </li>
                                 <li>
-                                    <a th:href="@{room}" data-hover="房间预定" th:if="${barType == 'room' || barType == 'single'}" class="active">房间预定</a>
-                                    <a th:href="@{room}" data-hover="房间预定" th:if="${barType != 'room' && barType != 'single'}">房间预定</a>
+                                    <a th:href="@{room}" data-hover="场地预定" th:if="${barType == 'room' || barType == 'single'}" class="active">场地预定</a>
+                                    <a th:href="@{room}" data-hover="场地预定" th:if="${barType != 'room' && barType != 'single'}">场地预定</a>
                                 </li>
-                                <li>
-                                    <a class="active" href="javascript:;" data-hover="餐品预订" th:if="${barType == 'product'}" id="product">餐品预订</a>
-                                    <a href="javascript:;" data-hover="餐品预订" th:if="${barType != 'product'}" id="product">餐品预订</a>
-                                   <!-- <a  th:if="${msg != null}" tabindex="0"  role="button" data-toggle="popover" data-trigger="focus" data-placement="bottom" data-content="请先入住">餐品预订</a>-->
-                                </li>
+                                <!--<li>-->
+                                    <!--<a class="active" href="javascript:;" data-hover="餐品预订" th:if="${barType == 'product'}" id="product">餐品预订</a>-->
+                                    <!--<a href="javascript:;" data-hover="餐品预订" th:if="${barType != 'product'}" id="product">餐品预订</a>-->
+                                   <!--&lt;!&ndash; <a  th:if="${msg != null}" tabindex="0"  role="button" data-toggle="popover" data-trigger="focus" data-placement="bottom" data-content="请先入住">餐品预订</a>&ndash;&gt;-->
+                                <!--</li>-->
                                 <li>
                                     <a class="active" th:href="@{about}" th:if="${barType == 'about'}" data-hover="关于我们">关于我们</a>
                                     <a th:href="@{about}" th:if="${barType != 'about'}" data-hover="关于我们">关于我们</a>
@@ -92,7 +92,7 @@
                         // $("#product").attr("disabled",true).css("pointer-events","none");
                         layui.use('layer',function () {
                             var layer = layui.layer;
-                            layer.tips('请先预订房间!','#product',{tips: 3})
+                            layer.tips('请先预订场地!','#product',{tips: 3})
                         });
                     }else{
                         $("#product").bind("click",function () {

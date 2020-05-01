@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>客房类型</title>
+    <title>场地类型</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}">
@@ -144,16 +144,16 @@
                 , limit: 20
                 , height: 'full-78'
                 , defaultToolbar: ['filter', 'exports', 'print']
-                , title: '客房数据表'
+                , title: '场地数据表'
                 , cols: [
                     [
                         {type: 'checkbox', fixed: 'left'}
                         , {field: 'id',title: '类型编号', fixed: 'left', unresize: true, sort: true,templet:'<div>{{d.id}}</div>'}
-                        , {field: 'type_name', title: '客房类型',templet:'<div>{{d.typeName}}</div>'}
-                        , {field: 'price', title: '房价', sort: true,templet:'<div>￥{{d.price/100}}</div>'}
-                        , {field: 'count', title: '客房总数', sort: true,templet:'<div>{{d.count}}</div>'}
-                        , {field: 'remain', title: '客房剩余数', sort: true,templet:'<div>{{d.remain}}</div>'}
-                        , {field: 'remark', title: '客房描述', sort: true,templet:'<div>{{d.remark}}</div>'}
+                        , {field: 'type_name', title: '场地类型',templet:'<div>{{d.typeName}}</div>'}
+                        , {field: 'price', title: '价格', sort: true,templet:'<div>￥{{d.price/100}}</div>'}
+                        , {field: 'count', title: '场地总数', sort: true,templet:'<div>{{d.count}}</div>'}
+                        , {field: 'remain', title: '场地剩余数', sort: true,templet:'<div>{{d.remain}}</div>'}
+                        , {field: 'remark', title: '场地描述', sort: true,templet:'<div>{{d.remark}}</div>'}
                     ]
                 ]
                 , page: { //支持传入 laypage 组件的所有参数
@@ -202,7 +202,7 @@
                    $.each(data,function () {
                         var d = $(this).get(0);
                         if (d.count>0){
-                            alert("请先删除该类型的所有客房");
+                            alert("请先删除该类型的所有场地");
                             a=false;
                             return false;
                         }
