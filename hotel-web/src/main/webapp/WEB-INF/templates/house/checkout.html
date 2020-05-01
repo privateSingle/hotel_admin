@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}">
+    <!--引入外部图标库-->
+    <link rel="stylesheet" th:href="@{/lib/layui/myicons/iconfont.css}">
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <style>
+        .content-input {
+            width: 12%;
+            min-width: 170px;
+            display: inline-block;
+        }
+
+        .content-input-01,.content-input-02,.content-input-03,.content-input-04 {
+            width: 20%;
+            min-width: 330px;
+        }
+
+        @media screen and (-webkit-min-device-pixel-ratio: 0) {
+            .content-input-01,.content-input-02,.content-input-03,.content-input-04 {
+                width: 21%;
+                min-width: 340px;
+            }
+        }
+
+        @media screen and (max-width: 1560px) {
+            .content-button{
+                margin-top: 10px;
+            }
+        }
+
+        @media screen and (max-width: 900px) {
+            .content-button,.content-input-03,.content-input-04{
+                margin-top: 10px;
+            }
+        }
+
+        @media screen and (max-width: 700px) {
+            .content-input-02,.content-button,.content-input-03,.content-input-04{
+                margin-top: 10px;
+            }
+            .content-button{
+                display: block;
+            }
+            .layui-laypage button {
+                 margin-left:2px;
+                 padding:0 5px;
+                 cursor:pointer
+            }
+            .layui-laypage input {
+                width:35px;
+                margin:0 2px;
+                padding:0 3px;
+                text-align:center
+            }
+            .layui-laypage .layui-laypage-skip {
+                margin-left:5px;
+                margin-right:10px;
+                padding:0;
+                border:none
+            }
+            .layui-laypage .layui-laypage-refresh {
+                margin-left:10px;
+                margin-right:0px;
+                padding:0;
+                border:none;
+                vertical-align: middle;
+            }
+            .layui-laypage .layui-laypage-count {
+                margin-left:10px;
+                margin-right:3px;
+                padding:0;
+                border:none
+            }
+            .layui-laypage a,
+            .layui-laypage span {
+                display:inline-block;
+                *display:inline;
+                *zoom:1;
+                vertical-align:middle;
+                padding:0 10px;
+                height:24px;
+                line-height:24px;
+                margin:0 -1px 5px 0;
+                background-color:#fff;
+                color:#333;
+                font-size:12px
+            }
+        }
+
+        .layui-form-checkbox[lay-skin="primary"] {
+            padding-left: 22px;
+        }
+
+        .layui-layer-my-molv .layui-layer-btn a {
+            background: #009f95;
+            border-color: #009f95
+        }
+
+        .layui-layer-my-molv .layui-layer-btn .layui-layer-btn1 {
+            background: #FFF
+        }
+    </style>
+</head>
+<body>
+
+<div style="padding: 0 10px">
+    <table class="layui-hide" id="listInfo" lay-filter="listInfo"></table>
+
+    <script id="operationBar" type="text/html">
+        <a class="layui-btn layui-btn-sm layui-btn-normal" lay-event="allot">退房</a>
+        <a class="layui-btn layui-btn-sm layui-btn-normal" lay-event="xufang">续房</a>
+    </script>
+
+</div>
+
+<script th:src="@{/lib/layui/layui.js}"></script>
+</body>
+</html>
+
+
+
+
+<script>
+    layui.use(['table','laydate','form'], function(){
+        var table = layui.table
+            ,form = layui.form,
+            laydate = layui.laydate;
+
+        var tableIns = $("#listInfo");
+
+        reloadMethod('getCheckOuts');
+
+        /**
+         * 初始化加载方法
+         */
+        function reloadMethod(urlData) {
+            tableIns = table.render({
+                elem: '#listInfo'
+                , url: urlData
+                // , toolbar: '#operationBar' //开启工具栏
+                , limit: 20
+                , height: 'full-78'
+                , defaultToolbar: ['filter', 'exports', 'print']
+                , title: '订单数据表'
+                , cols: [
+                    [
+                        {field: 'orderCode',title: '订单号', fixed: 'left', unresize: true, sort: true,templet:'<div>{{d.orderCode}}</div>'}
+                        , {field: '', title: '客人姓名', sort: true,templet:'<div>{{d.client.name}}</div>'}
+                        , {field: 'reserverCount', title: '预定房间数', sort: true,templet:'<div>{{d.reserverCount}}</div>'}
+                        , {field: 'money', title: '订单价格', sort: true,templet:'<div>￥{{d.money/100}}</div>'}
+                        , {field: 'create_date', title: '订单创建时间', sort: true,templet:'<div>{{d.createDate}}</div>'}
+                        , {field: 'caozuo', title: '操作', sort: true,toolbar:'#operationBar'}
+                    ]
+                ]
+                , page: { //支持传入 laypage 组件的所有参数
+                    layout: ['count','limit','prev', 'page', 'next', 'skip','refresh'] //自定义分页布局
+                    //,curr: 5 //设定初始在第 5 页
+                    ,groups: 5 //只显示 5 个连续页码
+                    , theme:'#08F'
+                    , first: '首页' //显示首页
+                    , last: '尾页' //显示尾页
+                }
+            });
+        }
+
+        //头工具栏事件
+        table.on('tool(listInfo)', function(obj){
+            var orderId = obj.data.id;
+            var houseTypeId = obj.data.houseTypeId;
+            switch(obj.event){
+                case 'allot':
+                     $.get('checkout?orderId='+orderId+'&houseTypeId='+houseTypeId,
+                         function (data) {
+                         if (data.result=="success") {
+                             layer.confirm(data.msg,{
+                                 icon:6,
+                                 btn:['确定'],
+                                 titel:'消息提示'
+                             },function () {
+                                 window.parent.location.reload();
+                             })
+                         }else {
+                             layer.msg(data.msg, {icon: 2});
+                         }
+                     });
+                    break;
+                case 'xufang':
+                    layer.open({
+                        type: 1
+                        ,title: false //不显示标题栏
+                        ,closeBtn: false
+                        ,area: '300px;'
+                        ,shade: 0.8
+                        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                        ,btn: ['选择离店时间', '取消']
+                        ,btnAlign: 'c'
+                        ,moveType: 1 //拖拽模式，0或者1
+                        ,content: '<div style="padding: 50px; line-height: 22px; font-weight: 200;">' +
+                            '<input type="date"  id="date" lay-verify="date" placeholder="年-月-日"class="layui-input">' +
+                            '</div>'
+                        ,success: function(layero) {
+                            var btn = layero.find('.layui-layer-btn');
+                            btn.find('.layui-layer-btn0').click(function () {
+                                var endDate = obj.data.houseDetailList[0].endDate;
+                                var date = $('#date').val();//续房之后的离店时间
+                                if (endDate<date) {
+                                    var day = new Date(date).getTime()-new Date(endDate).getTime();
+                                    var dayDiff = Math.floor(day / (24 * 3600 * 1000));//计算出相差天数
+                                    $.get('houseRenew?endDate='+date+'&orderId='+orderId+'&day='+dayDiff+'&houseOrders='+encodeURI(encodeURI(houseOrders)),
+                                        function (data) {
+                                            if (data.result=="success"){
+                                                layer.confirm(data.msg,{
+                                                   icon:6,btn:['确定'],title:'消息提示'
+                                                },function () {
+                                                    window.parent.location.reload();
+                                                });
+                                            }else {
+                                                layer.msg(data.msg, {icon: 5});
+                                            }
+                                    });
+                                }else {
+                                    layer.msg('请选择正确的离店时间,必须是'+endDate+'之后的时间',{icon:2});
+                                }
+                            })
+                        }
+                    });
+                    break;
+            }
+        });
+    });
+</script>

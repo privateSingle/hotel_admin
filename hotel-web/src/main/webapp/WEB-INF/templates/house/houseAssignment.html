@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>客房订单信息页面</title>
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}">
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/lib/layui/layui.js}"></script>
+    <style>
+        .statusBtn:hover{
+            cursor: default;
+        }
+    </style>
+</head>
+<body>
+<div style="padding: 10px;">
+    <!--保存已经选中的房间号-->
+    <input type="hidden" id="reserveHouseCode"/>
+    <!--预定的房间数量-->
+    <input type="hidden" id="reserveCount" th:value="${houseOrder.reserveCount}">
+    <!--订单号-->
+    <input type="hidden" id="orderId" th:value="${houseOrder.orderId}">
+
+    <fieldset class="layui-elem-field site-demo-button" style="margin-top: 30px;text-align: center">
+        <legend>客房状态</legend>
+        <div style="margin: 8px 0">
+            <button class="layui-btn statusBtn" type="button">未入住</button>
+            <button class="layui-btn layui-btn-disabled statusBtn" type="button">已入住</button>
+        </div>
+    </fieldset>
+    <span th:text="共预定了+${houseOrder.reserveCount}+间房"></span>
+    <div class="layui-tab" lay-filter="demo">
+        <input type="hidden" th:value="${houseOrder.houseTypeId}" id="houseOrderId">
+        <ul class="layui-tab-title" >
+            <li class="layui-this" th:text="${houseOrder.houseTypeName}"></li>
+        </ul>
+        <div class="layui-tab-content" >
+            <div class="layui-tab-item layui-show">
+            <span th:each="house : ${houseList}">
+            <button th:text="${house.houseCode}"  is-select="false" th:if="${house.houseStatus==0 && house.typeId==houseOrder.houseTypeId}"  data-method="offset" class="layui-btn btnHouse" type="button" data-type="auto"></button>
+            <button th:text="${house.houseCode}" th:if="${house.houseStatus==1 && house.typeId==houseOrder.houseTypeId}"  data-method="offset" class="layui-btn  layui-btn-disabled" type="button" disabled data-type="auto"></button>
+            </span>
+            </div>
+        </div>
+    </div>
+    <div style="float: right;margin: 300px 50px 0 0">
+        <button class="layui-btn queren" type="button">确认</button>
+    </div>
+</div>
+
+
+
+<script>
+
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+    });
+
+    layui.use(['layer'],function () {
+        var layer = layui.layer, $ = layui.jquery;
+
+        $(".btnHouse").click(function () {
+            var btn = $(this);
+            var houseCode =btn.text();//客房号
+            var houseOrderId=$("#houseOrderId").val();//客房订单Id
+            var select = btn.attr('is-select');
+            var reserveVal =  $('#reserveHouseCode').val();
+            layer.confirm(select=='false'? '是否要将'+houseCode+'分配给用户？': '是否要取消'+houseCode+'的分房操作？',
+                {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                if (select=='false'){
+                    btn.addClass('layui-btn-normal');
+                    btn.attr('is-select','true');
+                    $('#reserveHouseCode').val(reserveVal+houseCode+',');
+                    layer.msg('分房成功',{icon:1});
+                }else {
+                    btn.removeClass().addClass('layui-btn');
+                    btn.attr('is-select','false');
+                    var str = reserveVal.replace(houseCode+',','');
+                    $('#reserveHouseCode').val(str);
+                    layer.msg('取消成功',{icon:1});
+                }
+            }, function(){
+                layer.msg('已取消',{icon:2});
+            });
+        });
+
+
+
+        $('.queren').click(function () {
+            var reserveVal =  $('#reserveHouseCode').val();
+            var str = reserveVal.substring(0,reserveVal.length-1);
+            var btnLength = $('.layui-btn-normal').length;
+            var orderId = $('#orderId').val();
+            if (btnLength!=$('#reserveCount').val()){
+                layer.msg('操作不正确，您分配的房间数量有误',{icon:2});
+            } else {
+                $.post('updateHouseStatus',
+                    {str:str,orderId:orderId},
+                    function (data) {
+                     if (data.result=='success'){
+                         layer.msg(data.msg, {icon: 1});
+                         window.parent.parent.location.reload();//刷新父页面
+                         var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                         parent.parent.layer.close(index);
+                     }else {
+                         layer.msg(data.msg, {icon: 2});
+                     }
+                });
+            }
+        })
+
+    });
+</script>
+</body>
+</html>

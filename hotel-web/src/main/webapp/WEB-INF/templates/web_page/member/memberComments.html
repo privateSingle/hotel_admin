@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link th:href="@{/css/web_page/bootstrap.css}" rel="stylesheet" type="text/css" media="all">
+    <link th:href="@{/css/web_page/style.css}" rel="stylesheet" type="text/css" media="all"/>
+    <link th:href="@{/css/web_page/style1.css}" rel="stylesheet" type="text/css" media="all"/>
+    <link th:href="@{/css/web_page/animate.css}" rel="stylesheet" type="text/css" media="all">
+    <link type="text/css" rel="stylesheet" href="css/style6.css" th:href="@{/css/web_page/style6.css}"/>
+    <!--[if IE 6]>
+    <script type="text/javascript">
+        EvPNG.fix('div, ul, img, li, input, a');
+    </script>
+    <![endif]-->
+
+    <script src="js/jquery-3.3.1.js" th:src="@{/js/web_page/jquery-2.1.4.min.js}"></script>
+    <script type="text/javascript" src="js/iepng.js" th:src="@{/js/web_page/iepng.js}"></script>
+    <script type="text/javascript" src="js/menu.js" th:src="@{/js/web_page/menu.js}"></script>
+    <script type="text/javascript" src="js/menu.js" th:src="@{/js/web_page/select.js}"></script>
+
+
+    <title>Mr Hotels - 个人中心</title>
+</head>
+<body>
+
+<!--Begin Header Begin-->
+<div class="m_top_bg">
+    <div class="top">
+        <div class="m_logo" style="width: 180px">
+            <a href="" th:href="@{/initPage}" style="font-size:34px;font-weight: bold;line-height:58px;color:#FFF;">
+                Mr Hotels
+            </a>
+        </div>
+    </div>
+</div>
+<!--End Header End-->
+
+<div class="i_bg bg_color">
+    <!--Begin 用户中心 Begin -->
+    <div class="m_content">
+
+        <div class="m_left">
+            <div class="left_n">管理中心</div>
+            <div class="left_m">
+                <div class="left_m_t t_bg2">会员中心</div>
+                <ul>
+                    <li><a href="member_safe.html" th:href="@{memberIndexPage}">用户信息</a></li>
+                    <li><a href="member_safe.html" th:href="@{memberSafe}">账户安全</a></li>
+                    <li><a href="member_order.html" th:href="@{memberOrder}">我的订单</a></li>
+                    <li><a href="#" th:href="@{memberComments}" class="now">我的评论</a></li>
+                    <li><a href="member_safe.html" th:href="@{/initPage}">返回首页</a></li>
+                    <li><a href="member_safe.html" th:href="@{/webLoginOut}">退出登录</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="m_right">
+            <p></p>
+            <div class="mem_tit"></div>
+            <div class="address" th:each="comment:${comments}">
+                <div class="a_close"><a href="javascript:;"><img src="images/a_close.png"
+                                                                 th:src="@{/images/easybuy/a_close.png}"/></a></div>
+                <table border="0" class="add_t" align="center" style="width:98%; margin:10px auto;" cellspacing="0"
+                       cellpadding="0">
+                    <tr>
+                        <td colspan="2" style="font-size:14px; color:#ff4e00;">Mr Hotels</td>
+                        <td style="display: none" th:text="${comment.id}" id="commentId">Mr Hotels</td>
+                    </tr>
+                    <tr>
+                        <td align="right" width="80">客房类型：</td>
+                        <td th:text="${comment.houseType.typeName}">标准间</td>
+                    </tr>
+                    <tr>
+                        <td align="right">入住时间：</td>
+                        <td th:text="${comment.date}">2020-02-10 21:30:00</td>
+                    </tr>
+                    <tr>
+                        <td align="right">评价内容：</td>
+                        <td th:text="${comment.content}">好！很好！非常好！</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="float: right;margin-right: 30px;">
+                <div th:if="${comments.size() <= 0}" style="height: 600px;"></div>
+                <span style="display: inline-block;line-height: 34px;vertical-align: middle">
+                    共<span th:text="${count}"></span>条记录
+                    ，<span th:text="${totalPage}"></span>页
+                </span>
+                <button class="btn btn-warning pageBtn" pageIndex="1" th:disabled="${totalPage == page}">首页</button>
+                <button class="btn btn-warning pageBtn" th:pageIndex="${page}-1" th:disabled="${totalPage == page}">上一页</button>
+                <span style="display: inline-block;line-height: 34px;vertical-align: middle" th:text="${totalPage == 0?'0':page}">0</span>
+                /
+                <span style="display: inline-block;line-height: 34px;vertical-align: middle" th:text="${totalPage}">2</span>
+                <button class="btn btn-warning pageBtn" th:pageIndex="${page}+1" th:disabled="${totalPage == page}">下一页</button>
+                <button class="btn btn-warning pageBtn" th:pageIndex="${totalPage}" th:disabled="${totalPage == page}">尾页</button>
+            </div>
+        </div>
+    </div>
+    <!--End 用户中心 End-->
+
+    <!--Begin Footer Begin -->
+    <div th:frament="footer" id="footer" class="footer" style="margin-top: 16px;">
+        <div class="container">
+            <div class="footer-main">
+                <div class="col-md-3 ftr-grid wow zoomIn" data-wow-delay="0.3s">
+                    <div class="ftr-logo">
+                        <img th:src="@{/images/ftr-logo.png}" alt="">
+                    </div>
+                    <p style="font-size: 14px">
+                        Mr Hotels是私人投入巨资新建的顶级休闲会所，集餐饮、娱乐、洗浴、茶坊、客房为一体，酒店座落于山西省运城市。
+                        隐逸在城市和乡村的边缘，Mr Hotels独享着不可复制的天生静谧与悠然。
+                        一步是都市，一步是田野，酒店将竭力打造成为高档的、阳光的、尊贵的顶级休闲度假会所
+                    </p>
+                </div>
+                <div class="col-md-3 ftr-grid ftr-mid wow zoomIn" data-wow-delay="0.3s">
+                    <h3>地址</h3>
+                    <span class="ftr-line flm"> </span>
+                    <p style="font-size: 14px">山西省运城市盐湖区安逸东路108号</p>
+                    <p style="font-size: 14px">邮编：044000</p>
+                    <p style="font-size: 14px">联系电话：0359-XXXXXXX</p>
+
+                </div>
+                <div class="col-md-3 ftr-grid ftr-rit wow zoomIn" data-wow-delay="0.3s">
+                    <h3 style="font-family: 'Microsoft YaHei', 微软雅黑, 'Microsoft JhengHei', 华文细黑, STHeiti, MingLiu">
+                        联系我们</h3>
+                    <form>
+                        <input type="text" value="Email" onfocus="this.value = '';"
+                               onblur="if (this.value == '') {this.value = 'Email';}">
+                        <input type="submit" value="Send"/>
+                    </form>
+                    <ul class="ftr-icons">
+                        <li><a href="javascript:;"><span class="fa"> </span></a></li>
+                        <li><a href="javascript:;"><span class="tw"> </span></a></li>
+                        <li><a href="javascript:;"><span class="link"> </span></a></li>
+                        <li><a href="javascript:;"><span class="gmail"> </span></a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 ftr-grid ftr-last-gd ftr-rit wow zoomIn" data-wow-delay="0.3s">
+                    <h3>快速链接</h3>
+                    <ul class="ftr-nav" style="font-size: 1.2em;font-family: 'Hind', sans-serif;">
+                        <li><a th:href="@{/initPage}">首页</a></li>
+                        <li><a th:href="@{/room}">房间预定</a></li>
+                        <li><a th:href="@{/about}">关于我们</a></li>
+                        <li><a th:href="@{/login}">网站后台</a></li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="copy-right" th:frament="copy-right" id="copy-right">
+        <div class="container">
+            <div class="copy-rights-main wow zoomIn" data-wow-delay="0.3s">
+                <p style="font-size: 1.25em;font-family: 'Hind', sans-serif;">Copyright &copy; 2020.Author：Mr.Wang, All
+                    rights reserved.More 仿冒/复制必究</p>
+            </div>
+        </div>
+    </div>
+    <!--End Footer End -->
+</div>
+
+<script th:src="@{/lib/layui/layui.js}"></script>
+<script>
+    jQuery(function ($) {
+
+        $(".left_m").height($(".m_right").height() - 15);
+
+        //为分页按钮绑定点击事件
+        $(".pageBtn").click(function () {
+            window.location.href = "memberComments?page="+$(this).attr("pageIndex");
+        });
+
+        //为删除图标绑定单击删除事件
+        $(".a_close").click(function () {
+            //获取要删除的ID
+            var commentId = $(this).parent().find("#commentId").text();
+            layui.use('layer', function () {
+                var layer = layui.layer;
+                layer.confirm('确定要删除这条评价信息？', {
+                    btn: ['确定', '取消'] //按钮
+                    , shade: 0.3
+                    , anim: 6
+                    , closeBtn: 0
+                    , icon: 5
+                    , title: '温馨提示'
+                }, function () { //确定
+                    //调用异步删除方法
+                    $.getJSON(
+                        'deleteCommentInfo?commentId=' + commentId,
+                        function (rollData) {
+                            if (rollData.result == "success") {
+                                layer.confirm(rollData.msg, {
+                                    btn: ['确定'] //按钮
+                                    , icon: 6
+                                }, function () {
+                                    window.location.reload();
+                                })
+                            } else {
+                                layer.confirm(rollData.msg, {
+                                    btn: ['确定'] //按钮
+                                    , icon: 5
+                                }, function () {
+                                    window.location.reload();
+                                })
+                            }
+                        }
+                    )
+                }, function () { //取消
+                    lock = true;
+                    layer.msg('取消删除！', {
+                        icon: 6
+                        , time: 2000
+                    });
+                })
+            });
+        })
+    });
+</script>
+
+</body>
+
+<!--[if IE 6]>
+<script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+</html>

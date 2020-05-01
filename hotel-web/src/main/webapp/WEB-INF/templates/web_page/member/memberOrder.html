@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link th:href="@{/css/web_page/bootstrap.css}" rel="stylesheet" type="text/css" media="all">
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}">
+    <link th:href="@{/css/web_page/style.css}" rel="stylesheet" type="text/css" media="all"/>
+    <link th:href="@{/css/web_page/style1.css}" rel="stylesheet" type="text/css" media="all"/>
+    <link th:href="@{/css/web_page/animate.css}" rel="stylesheet" type="text/css" media="all">
+    <link type="text/css" rel="stylesheet" href="css/style6.css" th:href="@{/css/web_page/style6.css}"/>
+    <!--[if IE 6]>
+    <script type="text/javascript">
+        EvPNG.fix('div, ul, img, li, input, a');
+    </script>
+    <![endif]-->
+
+    <script src="js/jquery-3.3.1.js" th:src="@{/js/web_page/jquery-2.1.4.min.js}"></script>
+    <script type="text/javascript" src="js/iepng.js" th:src="@{/js/web_page/iepng.js}"></script>
+    <script type="text/javascript" src="js/menu.js" th:src="@{/js/web_page/menu.js}"></script>
+    <script type="text/javascript" src="js/menu.js" th:src="@{/js/web_page/select.js}"></script>
+
+
+    <title>Mr Hotels - 个人中心</title>
+</head>
+<body>
+
+<div class="m_top_bg">
+    <div class="top">
+        <div class="m_logo" style="width: 180px">
+            <a href="" th:href="@{/initPage}" style="font-size:34px;font-weight: bold;line-height:58px;color:#FFF;">
+                Mr Hotels
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="i_bg bg_color">
+    <!--Begin 用户中心 Begin -->
+    <div class="m_content">
+
+        <div class="m_left">
+            <div class="left_n">管理中心</div>
+            <div class="left_m">
+                <div class="left_m_t t_bg2">会员中心</div>
+                <ul>
+                    <li><a href="member_safe.html" th:href="@{memberIndexPage}">用户信息</a></li>
+                    <li><a href="member_safe.html" th:href="@{memberSafe}">账户安全</a></li>
+                    <li><a href="member_order.html" th:href="@{memberOrder}" class="now">我的订单</a></li>
+                    <li><a href="#" th:href="@{memberComments}">我的评论</a></li>
+                    <li><a href="member_safe.html" th:href="@{/initPage}">返回首页</a></li>
+                    <li><a href="member_safe.html" th:href="@{/webLoginOut}">退出登录</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="m_right" style="padding: 15px">
+            <p></p>
+            <div class="mem_tit">我的订单</div>
+
+
+            <table class="layui-hide" id="listInfo" lay-filter="listInfo"></table>
+
+            <script id="operationBar" type="text/html">
+                {{#  if(d.orderStatus == 1 || d.orderStatus == 2 || d.orderStatus == 3){ }}
+                <a class="layui-btn layui-btn-sm layui-btn-normal" lay-event="delete"
+                   style="height: 24px;line-height: 24px;">删除订单</a>
+                {{#  } }}
+
+                {{#  if(d.orderStatus == 0){ }}
+                <a class="layui-btn layui-btn-sm layui-bg-orange" lay-event="cancel"
+                   style="height: 24px;line-height: 24px;">取消订单</a>
+                {{#  } }}
+
+
+                {{#  if((d.orderStatus == 1 || d.orderStatus == 3) && d.isComment == 0){ }}
+                <a class="layui-btn layui-btn-sm layui-bg-orange" lay-event="comment"
+                   style="height: 24px;line-height: 24px;">发表评价</a>
+                {{#  } }}
+            </script>
+
+            <script id="ifOrderStatus" type="text/html">
+                {{#  if(d.orderStatus == 0){ }}
+                <span class="layui-badge layui-bg-orange">已预订</span>
+                {{# } }}
+
+                {{#  if(d.orderStatus == 1 || d.orderStatus == 3){ }}
+                <span class="layui-badge layui-bg-green">已完成</span>
+                {{# } }}
+
+                {{#  if(d.orderStatus == 1 && d.isComment == 1){ }}
+                <span class="layui-badge layui-bg-green">已评价</span>
+                {{# } }}
+
+                {{#  if((d.orderStatus == 1 || d.orderStatus == 3) && d.isComment == 0){ }}
+                <span class="layui-badge layui-bg-red">未评价</span>
+                {{# } }}
+
+                {{#  if(d.orderStatus == 2){ }}
+                <span class="layui-badge layui-bg-red">已取消</span>
+                {{# } }}
+            </script>
+
+        </div>
+    </div>
+    <!--End 用户中心 End-->
+
+    <!--Begin Footer Begin -->
+    <div th:frament="footer" id="footer" class="footer" style="margin-top: 16px;">
+        <div class="container">
+            <div class="footer-main">
+                <div class="col-md-3 ftr-grid wow zoomIn" data-wow-delay="0.3s">
+                    <div class="ftr-logo">
+                        <img th:src="@{/images/ftr-logo.png}" alt="">
+                    </div>
+                    <p style="font-size: 14px">
+                        Mr Hotels是私人投入巨资新建的顶级休闲会所，集餐饮、娱乐、洗浴、茶坊、客房为一体，酒店座落于山西省运城市。
+                        隐逸在城市和乡村的边缘，Mr Hotels独享着不可复制的天生静谧与悠然。
+                        一步是都市，一步是田野，酒店将竭力打造成为高档的、阳光的、尊贵的顶级休闲度假会所
+                    </p>
+                </div>
+                <div class="col-md-3 ftr-grid ftr-mid wow zoomIn" data-wow-delay="0.3s">
+                    <h3>地址</h3>
+                    <span class="ftr-line flm"> </span>
+                    <p style="font-size: 14px">山西省运城市盐湖区安逸东路108号</p>
+                    <p style="font-size: 14px">邮编：044000</p>
+                    <p style="font-size: 14px">联系电话：0359-XXXXXXX</p>
+
+                </div>
+                <div class="col-md-3 ftr-grid ftr-rit wow zoomIn" data-wow-delay="0.3s">
+                    <h3>联系我们</h3>
+                    <form>
+                        <input type="text" value="Email" onfocus="this.value = '';"
+                               onblur="if (this.value == '') {this.value = 'Email';}">
+                        <input type="submit" value="Send"/>
+                    </form>
+                    <ul class="ftr-icons">
+                        <li><a href="javascript:;"><span class="fa"> </span></a></li>
+                        <li><a href="javascript:;"><span class="tw"> </span></a></li>
+                        <li><a href="javascript:;"><span class="link"> </span></a></li>
+                        <li><a href="javascript:;"><span class="gmail"> </span></a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 ftr-grid ftr-last-gd ftr-rit wow zoomIn" data-wow-delay="0.3s">
+                    <h3>快速链接</h3>
+                    <ul class="ftr-nav" style="font-size: 1.2em;font-family: 'Hind', sans-serif;">
+                        <li><a th:href="@{/initPage}">首页</a></li>
+                        <li><a th:href="@{/room}">房间预定</a></li>
+                        <li><a th:href="@{/about}">关于我们</a></li>
+                        <li><a th:href="@{/login}">网站后台</a></li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="copy-right" th:frament="copy-right" id="copy-right">
+        <div class="container">
+            <div class="copy-rights-main wow zoomIn" data-wow-delay="0.3s">
+                <p style="font-size: 1.25em;font-family: 'Hind', sans-serif;">Copyright &copy; 2020.Author：Mr.Wang, All
+                    rights reserved.More 仿冒/复制必究</p>
+            </div>
+        </div>
+    </div>
+    <!--End Footer End -->
+</div>
+
+<script th:src="@{/lib/layui/layui.js}"></script>
+<script>
+    layui.use(['layer', 'table', 'form'], function () {
+        var table = layui.table
+            , form = layui.form
+            , $ = layui.jquery;
+
+        var tableIns = $("#listInfo");
+
+        $(".left_m").height($(".m_right").height() - 35);
+
+        reloadMethod('webOrder/initData');
+
+        /**
+         * 初始化加载方法
+         */
+        function reloadMethod(urlData) {
+            tableIns = table.render({
+                elem: '#listInfo'
+                , url: urlData
+                // , toolbar: '#operationBar' //开启工具栏
+                , height: 'full-400'
+                , limit: 10
+                , initSort: {
+                    field: 'createDate' //排序字段，对应 cols 设定的各字段名
+                    , type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+                }
+                , cols: [
+                    [
+                        {field: 'orderCode',title: '订单号', fixed: 'left', unresize: true, sort: true,width:'18%'}
+                        , {field: 'id', title: 'ID', width: 50,hide:true}
+                        , {field: 'createDate',title: '创建时间',width:'20%', templet:'<div><span title="{{d.createDate}}">{{d.createDate}}</span></div>'}
+                        , {field: 'money',title: '订单金额',width:'10%', templet: '<div>{{d.money/100}}元</div>'}
+                        , {field: 'orderType',title: '订单类型', templet: '<div>{{d.orderType==0?"房间预定":"餐品预定"}}</div>'}
+                        , {field: 'score',title: '订单状态',templet: '#ifOrderStatus'}
+                        , {field: 'caozuo',title: '操作',width:'20%', toolbar: '#operationBar'}
+                    ]
+                ]
+                , page: { //支持传入 laypage 组件的所有参数
+                    theme: '#08F'
+                    , layout: ['count', 'limit', 'prev', 'page', 'next', 'skip', 'refresh'] //自定义分页布局
+                    //,curr: 5 //设定初始在第 5 页
+                    , groups: 5 //只显示 5 个连续页码
+                    , first: '首页' //显示首页
+                    , last: '尾页' //显示尾页
+                }
+            });
+        }
+
+        //监听工具条
+        table.on('tool(listInfo)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'cancel'){
+                layer.confirm('确定取消本条订单吗？', {
+                    icon:5
+                },function(index){
+                    var orderCode = data.orderCode;
+                    $.getJSON(
+                        'updateOrderStatus?orderCode='+orderCode,
+                        function (data) {
+                            if(data.result = "success"){
+                                layer.confirm(data.msg,{
+                                    icon:6
+                                    ,title:'消息提示'
+                                    ,btn:['确定']
+                                },function () {
+                                    window.location.reload();
+                                });
+                            }else{
+                                layer.open({
+                                    icon:5
+                                    ,content:data.msg
+                                    ,title:'消息提示'
+                                });
+                            }
+                        }
+                    );
+                    layer.close(index);
+                });
+            } else if(obj.event === 'delete'){
+                layer.confirm('确定删除本条订单信息吗？', {
+                    icon:5
+                },function(index){
+                    $.getJSON(
+                        'deleteOrderInfoByOrderId?orderId='+data.id,
+                        function (data) {
+                            if(data.result = "success"){
+                                layer.open({
+                                    icon:6
+                                    ,content:data.msg
+                                    ,title:'消息提示'
+                                });
+                                obj.del();
+                            }else{
+                                layer.open({
+                                    icon:5
+                                    ,content:data.msg
+                                    ,title:'消息提示'
+                                });
+                            }
+                        }
+                    );
+                    layer.close(index);
+                });
+            } else if(obj.event === 'comment'){
+                layer.open({
+                    type: 2,
+                    title: '订单评价',
+                    shadeClose: true,
+                    shade: 0.5,
+                    maxmin: false,
+                    area: ['500px', '370px'],
+                    content: 'skipWriteComment?orderId='+data.id
+                });
+            }
+        });
+    });
+</script>
+
+</body>
+
+
+<!--[if IE 6]>
+<script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+</html>

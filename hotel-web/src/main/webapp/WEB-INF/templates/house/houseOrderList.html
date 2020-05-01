@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--订单处理页面-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}">
+    <!--引入外部图标库-->
+    <link rel="stylesheet" th:href="@{/lib/layui/myicons/iconfont.css}">
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <style>
+        .content-input {
+            width: 12%;
+            min-width: 170px;
+            display: inline-block;
+        }
+
+        .content-input-01,.content-input-02,.content-input-03,.content-input-04 {
+            width: 20%;
+            min-width: 330px;
+        }
+
+        @media screen and (-webkit-min-device-pixel-ratio: 0) {
+            .content-input-01,.content-input-02,.content-input-03,.content-input-04 {
+                width: 21%;
+                min-width: 340px;
+            }
+        }
+
+        @media screen and (max-width: 1560px) {
+            .content-button{
+                margin-top: 10px;
+            }
+        }
+
+        @media screen and (max-width: 900px) {
+            .content-button,.content-input-03,.content-input-04{
+                margin-top: 10px;
+            }
+        }
+
+        @media screen and (max-width: 700px) {
+            .content-input-02,.content-button,.content-input-03,.content-input-04{
+                margin-top: 10px;
+            }
+            .content-button{
+                display: block;
+            }
+            .layui-laypage button {
+                margin-left:2px;
+                padding:0 5px;
+                cursor:pointer
+            }
+            .layui-laypage input {
+                width:35px;
+                margin:0 2px;
+                padding:0 3px;
+                text-align:center
+            }
+            .layui-laypage .layui-laypage-skip {
+                margin-left:5px;
+                margin-right:10px;
+                padding:0;
+                border:none
+            }
+            .layui-laypage .layui-laypage-refresh {
+                margin-left:10px;
+                margin-right:0px;
+                padding:0;
+                border:none;
+                vertical-align: middle;
+            }
+            .layui-laypage .layui-laypage-count {
+                margin-left:10px;
+                margin-right:3px;
+                padding:0;
+                border:none
+            }
+            .layui-laypage a,
+            .layui-laypage span {
+                display:inline-block;
+                *display:inline;
+                *zoom:1;
+                vertical-align:middle;
+                padding:0 10px;
+                height:24px;
+                line-height:24px;
+                margin:0 -1px 5px 0;
+                background-color:#fff;
+                color:#333;
+                font-size:12px
+            }
+        }
+
+        .layui-form-checkbox[lay-skin="primary"] {
+            padding-left: 22px;
+        }
+
+        .layui-layer-my-molv .layui-layer-btn a {
+            background: #009f95;
+            border-color: #009f95
+        }
+
+        .layui-layer-my-molv .layui-layer-btn .layui-layer-btn1 {
+            background: #FFF
+        }
+    </style>
+</head>
+<body>
+<input type="hidden" th:value="${orderType}">
+
+    <div style="padding: 10px;">
+        <!--------------------------------------------------------商品订单start---------------------------------------------------------------->
+        <table class="layui-table" id="houseAssingn" th:if="${orderType=='product'}">
+            <thead>
+            <tr>
+                <th>房间号</th>
+                <th>商品名</th>
+                <th>商品价格</th>
+                <th>商品数量</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="productOrder:${productDetails}">
+                <input class="orderId" type="hidden" th:value="${productOrder.orderId}">
+                <td th:text="${productOrder.houseCode}"></td>
+                <td th:text="${productOrder.productName}"></td>
+                <td th:text="${productOrder.money/100}"></td>
+                <td th:text="${productOrder.count}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <a class="layui-btn layui-btn-md layui-btn-normal" lay-event="allot" id="songcan" th:if="${orderStatus==0}" style="float: right">送餐</a>
+    </div>
+
+<script th:src="@{/lib/layui/layui.js}"></script>
+</body>
+</html>
+
+
+
+
+<script>
+    layui.use(['table','form'], function(){
+
+        var table = layui.table
+            ,form = layui.form;
+        var tableIns = $("#listInfo");
+
+        $("#songcan").click(function () {
+            var orderId=$('.orderId').val();
+            $.get('foodDelivery?productOrderId='+orderId,function (data) {
+                if (data.result=='success'){
+                    layer.confirm(data.msg,{
+                        btn:['确定']  //按钮
+                        , skin: 'layui-layer-lan'
+                        , icon: 1
+                        , anim: 6
+                    },function () {
+                        window.parent.location.reload();    //刷新父页面
+                    });
+                }else {
+                    layer.confirm(data.msg,{
+                        btn:['确定']  //按钮
+                        , skin: 'layui-layer-lan'
+                        , icon: 5
+                        , anim: 6
+                    },function () {
+                        window.parent.location.reload();    //刷新父页面
+                    });
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>新增</title>
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}">
+    <!--引入外部图标库-->
+    <link rel="stylesheet" th:href="@{/lib/layui/myicons/iconfont.css}">
+    <script th:src="@{/lib/layui/layui.js}"></script>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <style>
+        .layui-form-pane .layui-form-text .layui-textarea {
+            min-height: 80px;
+            max-height: 80px;
+        }
+        .div_show{
+            transform: translate(-2000px);
+            transition: all 0.8s;
+        }
+        .div_hide{
+            transform: translate(2000px);
+            transition: all 1.5s;
+        }
+        .photo-viewer{
+            margin: 50px 0;
+            text-align: center;
+        }
+        .img-reveal{
+            display: inline-block;
+            margin: 0px 8px;
+        }
+        .form-info{
+            margin: 15px;
+            position: relative;
+            overflow: hidden
+        }
+        @media screen and (-webkit-min-device-pixel-ratio:0) {
+            .form-info{
+                margin: 12px;
+            }
+        }
+        .layui-form-select dl { max-height:200px; }
+    </style>
+</head>
+<body style="height: 100%">
+<!--该隐藏字段为了标识本次新增的内容是什么-->
+<input type="hidden" id="add-type" th:value="${operationType}">
+<!-- -------------------------------------------------------新增商品信息 Start------------------------------------------------------- -->
+<!--表单-->
+<form class="layui-form layui-form-pane form-info addForm" action="" add-url="addProduct" th:if="${operationType == 'product'}">
+    <div id="product_info" style="width:100%">
+        <div class="layui-form-item">
+            <div class="layui-form-item">
+                <label class="layui-form-label">商品名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="name" lay-verify="required" placeholder="请输入商品名" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">商品类型</label>
+                <div class="layui-input-inline">
+                    <select name="productType" lay-filter="type" id="type">
+                        <option  th:each="list:${lists}" th:value="${list.id}" th:text="${list.name}">商品类型</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">商品单价</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="price" lay-verify="required" placeholder="请输入商品单价" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+
+            <!--<div class="layui-form-item">
+                <label class="layui-form-label">商品数量</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="count" lay-verify="required" placeholder="请输入商品数量" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>-->
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">商品单位</label>
+                <div class="layui-input-inline">
+                    <!--<input type="text" name="unit" lay-verify="required" placeholder="请输入商品单位" autocomplete="off"
+                           class="layui-input">-->
+                    <select name="unit" id="">
+                        <option value="瓶">瓶</option>
+                        <option value="箱">箱</option>
+                        <option value="袋">袋</option>
+                        <option value="克">克</option>
+                        <option value="根">根</option>
+                        <option value="盒">盒</option>
+                        <option value="包">包</option>
+                    </select>
+                </div>
+            </div>
+
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">商品状态</label>
+                <div class="layui-input-inline"><!--
+                    <input type="text" name="status" lay-verify="required" placeholder="请输入商品状态" autocomplete="off"
+                           class="layui-input">-->
+                    <select name="status">
+                        <option value="0">可销售</option>
+                        <option value="1">非销售</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="layui-form-item" style="margin-top:15px;width:500px;">
+        <label class="layui-form-label">商品图片</label>
+        <div class="layui-upload">
+            <button type="button" class="layui-btn layui-btn-normal" id="test1">选择图片</button>
+            <div class="layui-upload-list">
+                <img class="layui-upload-img" id="demo1" style="height: 200px;width: 75%;">
+                <p id="demoText"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-input">
+        <input type="button" value="提交" name="submit" class="layui-btn addBtn layui-btn-normal">
+        <input type="reset" class="layui-btn layui-btn-normal" value="清空">
+    </div>
+</form>
+    <!-- -------------------------------------------------------新增商品信息 END------------------------------------------------------- -->
+
+
+
+<!-- ------------------------------------------------------新增商品类型 Start------------------------------------------------------ -->
+<form action="" method="post" add-url="addProductTypeInfo" th:name="${operationType}" class="addForm layui-form layui-form-pane form-info" th:if="${operationType == 'productType'}">
+    <div class="layui-form-item" style="margin-top: 45px;">
+        <label class="layui-form-label">商品类型</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" lay-verify="required" placeholder="请输入商品类型名" autocomplete="off"
+                   class="layui-input">
+        </div>
+
+    </div>
+    <div class="content-input" style="text-align: center;">
+        <input type="button" value="提交" name="submit" class="layui-btn addBtn layui-btn-normal" >
+        <input type="reset" class="layui-btn layui-btn-normal" value="清空">
+    </div>
+</form>
+<!-- -------------------------------------------------------新增商品类型 END------------------------------------------------------- -->
+
+<!-- ------------------------------------------------------新增采购信息 Start------------------------------------------------------ -->
+<form action="" method="post" add-url="addPurchaseInfo" th:name="${operationType}" class="addForm layui-form layui-form-pane form-info" th:if="${operationType == 'purchase'}" style="height: 100%">
+    <div style="width:100%">
+        <div class="layui-form-item">
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">商品名</label>
+                <div class="layui-input-inline">
+                    <select name="productId" lay-filter="type">
+                        <option  th:each="list:${lists}" th:value="${list.id}" th:text="${list.name}">商品名</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">商品进价</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="price" lay-verify="required" placeholder="请输入商品进价" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+
+           <div class="layui-form-item">
+                <label class="layui-form-label">商品数量</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="count" lay-verify="required" placeholder="请输入商品数量" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">商品单位</label>
+                <div class="layui-input-inline">
+                    <select name="unit">
+                        <option value="瓶">瓶</option>
+                        <option value="箱">箱</option>
+                        <option value="袋">袋</option>
+                        <option value="克">克</option>
+                        <option value="根">根</option>
+                        <option value="盒">盒</option>
+                        <option value="包">包</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="content-input">
+        <input type="button" value="提交" name="submit" class="layui-btn addBtn layui-btn-normal">
+        <input type="reset" class="layui-btn layui-btn-normal" value="清空">
+    </div>
+</form>
+<!-- -------------------------------------------------------新增采购信息 END------------------------------------------------------- -->
+<!-- -------------------------------------------------------新增商品信息 Start------------------------------------------------------- -->
+<!--表单-->
+<form class="layui-form layui-form-pane form-info addForm" action="" add-url="addDishes" th:if="${operationType == 'dishes'}">
+    <div id="dishes_info" style="width:100%">
+        <div class="layui-form-item">
+            <div class="layui-form-item">
+                <label class="layui-form-label">菜品名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="name" lay-verify="required" placeholder="请输入菜品名" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">菜品单价</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="price" lay-verify="required" placeholder="请输入菜品单价" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="layui-form-item" style="margin-top:15px;width:500px;">
+        <label class="layui-form-label">菜品图片</label>
+        <div class="layui-upload">
+            <button type="button" class="layui-btn layui-btn-normal" id="test1">选择图片</button>
+            <div class="layui-upload-list">
+                <img class="layui-upload-img" id="demo1" style="height: 200px;width: 75%;">
+                <p id="demoText"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-input">
+        <input type="button" value="提交" name="submit" class="layui-btn addBtn layui-btn-normal">
+        <input type="reset" class="layui-btn layui-btn-normal" value="清空">
+    </div>
+</form>
+<!-- -------------------------------------------------------新增商品信息 END------------------------------------------------------- -->
+
+
+<script>
+    layui.use(['form','upload'], function () {
+        var $ = layui.jquery
+            , layer = layui.layer
+            , upload = layui.upload;
+        var lock = true;
+        /**
+         * 绑定回车事件
+         */
+        $(document).keypress(function (e) {
+            //如果当前有类似layer.alert的窗体，点击最上层的确定按钮，并且取消所有焦点
+            if($('.layui-layer-btn0').length > 0){
+                $('.layui-layer-btn0').eq($('.layui-layer-btn0').length - 1)[0].click();
+                $("*").blur();
+            }
+        });
+
+        /**
+         * 单击提交事件
+         */
+        $(".addBtn").click(function () {
+            if(lock) {      //判断是否重复提交
+                lock = false;
+                //判断添加对象
+                var formName = $("#add-type").val();
+                //获取表单数据
+                var addData = getSubmitData(formName);
+                //判断是否为空
+                var flag = verifyData(formName);
+                //获取提交的url
+                var url = $(".addForm").attr("add-url");
+                //ajax提交
+                if (flag.trim().length == 0) {
+                    $.getJSON(
+                        url,
+                        addData,
+                        function (rollData) {
+                            if (rollData.result == "success") {
+                                layer.confirm(rollData.msg, {
+                                    btn: ['确定']  //按钮
+                                    , skin: 'layui-layer-lan'
+                                    , icon: 6
+                                }, function () {
+                                    window.parent.location.reload();    //刷新父页面
+                                });
+                            } else {
+                                layer.confirm(rollData.msg, {
+                                    btn: ['确定']  //按钮
+                                    , skin: 'layui-layer-lan'
+                                    , icon: 5
+                                    , anim: 6
+                                }, function () {
+                                    lock = true;
+                                });
+                            }
+                        }
+                    )
+                } else {
+                    lock = true;
+                    layer.open({
+                        title: '错误消息'
+                        , content: flag
+                        , skin: 'layui-layer-lan'
+                        , shade: 0
+                        , icon: 5
+                        , anim: 6
+                        , closeBtn: 0
+                    })
+                }
+            }
+        });
+
+        /**
+         * 获取提交数据
+         */
+        function getSubmitData(formName){
+            var addData = '';
+            if(formName == 'productType'){
+                addData = $(".addForm").serialize();
+            }else if(formName == 'product'){
+                var form = $(".addForm");
+                var name = form.find($("input[name = 'name']")).val();  //获取商品名
+                var price = form.find($("input[name='price']")).val();      //获取商品单价
+               /* var count = form.find($("input[name='count']")).val();   //获取商品数量*/
+                var unit = form.find($("select[name='unit']")).val();   //获取商品单位
+                var productType = form.find($("select[name='productType']")).val();//获取商品类型ID
+                var status = form.find($("select[name='status']")).val();//获取商品状态
+                addData = {
+                    "name": name,
+                    "price": price * 100,
+                    /*"count": count,*/
+                    "unit": unit,
+                    "productType": productType,
+                    "status": status
+                };
+            }else if(formName == 'purchase'){
+                var form = $(".addForm");
+                var price = form.find($("input[name='price']")).val();    //获取商品单价
+                var count = form.find($("input[name='count']")).val();   //获取商品数量
+                var unit = form.find($("select[name='unit']")).val();   //获取商品单位
+                var productId = form.find($("select[name='productId']")).val();  //获取商品ID
+                //获取当前时间(精确到时分秒)
+                var day2 = new Date();
+                day2.setTime(day2.getTime());
+                var s2 = day2.getFullYear()+"-" + (day2.getMonth()+1) + "-" + day2.getDate()+" "+day2.getHours()+":"+day2.getMinutes()+":"+day2.getSeconds();
+                //采购总价
+                var totalPrice = price*count;
+                addData = {
+                    "productId": productId,
+                    "price": price * 100,
+                    "count": count,
+                    "unit": unit,
+                    "purchaseDate":s2,
+                    "totalPrice":totalPrice * 100
+                };
+            }else if(formName == 'dishes'){
+                var form = $(".addForm");
+                var name = form.find($("input[name = 'name']")).val();  //获取菜品名
+                var price = form.find($("input[name='price']")).val(); //获取菜品单价
+                addData = {
+                    "name": name,
+                    "price": price * 100
+                };
+            }
+            return addData;
+        }
+
+        /**
+         * 验证数据
+         */
+        function verifyData(formName){
+            var result = "";
+            switch(formName){
+                case "product":
+                    result = verifyPetInfo();
+                    break;
+                case "productType":
+                    var form = $(".addForm");
+                    if(form.find("input[name = 'name']").val().trim().length <= 0){
+                        result = "类型名不能为空！";
+                    }
+                    break;
+                case "purchase":
+                    //获取表单
+                    var form = $(".addForm");
+                    var znum = /^[0-9]+$/; //验证是否是正整数
+                    var num = /(?!^0*(\.0{1,2})?$)^\d{1,13}(\.\d{1,2})?$/; //验证是否为数字
+                    var price = form.find($("input[name='price']")).val();      //获取商品单价
+                    var count = form.find($("input[name='count']")).val();   //获取商品数量
+                    if(!num.test(price)){
+                        result = "商品单进价式不正确!";
+                    }else if(!znum.test(count)){
+                        result = "商品数量必须为整数！";
+                    }
+                    break;
+                case "dishes":
+                    //获取表单
+                    var form = $(".addForm");
+                    var num = /(?!^0*(\.0{1,2})?$)^\d{1,13}(\.\d{1,2})?$/; //验证是否为数字
+                    var price = form.find($("input[name='price']")).val();      //获取商品单价
+                    if(form.find("input[name = 'name']").val().trim().length <= 0){
+                        result = "菜品名不能为空！";
+                    }else if(!num.test(price)){
+                        result = "菜品单价格式不正确!";
+                    }
+                    break;
+            }
+            return result;
+        }
+        /**
+         * 验证商品信息
+         */
+        function verifyPetInfo(){
+            //获取表单
+            var form = $(".addForm");
+           /* var znum = /^[0-9]+$/; //验证是否是正整数*/
+            var num = /(?!^0*(\.0{1,2})?$)^\d{1,13}(\.\d{1,2})?$/; //验证是否为数字
+            //验证表单需要填写的字段
+            var name = form.find($("input[name = 'name']")).val();  //获取商品名
+            var price = form.find($("input[name='price']")).val();      //获取商品单价
+           /* var count = form.find($("input[name='count']")).val();   //获取商品数量*/
+            //var unit = form.find($("input[name='unit']")).val();   //获取商品单位
+            //验证是否为空
+            if(name.trim().length <= 0){
+                return "商品名不可为空！";
+            }else if(!num.test(price)){
+                return "商品单价格式不正确!";
+            }/*else if(!znum.test(count)){
+                return "商品数量必须为整数！";
+            }*//*else if(unit.trim().length <= 0){
+                return "商品单位不可为空！";
+            }*/
+            return "";
+        }
+
+
+    })
+    layui.use('upload', function(){
+        var $ = layui.jquery
+            ,upload = layui.upload;
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1'
+            ,url: 'uploads'
+            ,size:2048
+            ,acceptMime:'image/jpg, image/png, image/gif'       //上传所有类型的图片
+            //限制文件大小为2M
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                //上传成功
+                if (res.result == "success"){
+                    layer.confirm('上传图片成功！',{
+                        btn:['确定']  //按钮
+                        , skin: 'layui-layer-lan'
+                        , icon: 6
+                    });
+                    console.log(res.success);
+                }else{//上传失败
+                    layer.confirm('上传图片失败！',{
+                        btn:['确定']  //按钮
+                        , skin: 'layui-layer-lan'
+                        , icon: 6
+                    });
+                }
+
+
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

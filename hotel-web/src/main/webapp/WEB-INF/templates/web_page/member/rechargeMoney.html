@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script th:src="@{/lib/layui/layui.js}"></script>
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}" />
+</head>
+<body>
+
+<div style="padding: 20px; background-color: #F2F2F2;">
+    <input type="hidden" id="isVip" th:value="${session.clientUser.isVip}">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">请选择充值金额</div>
+                <div class="layui-card-body" style="text-align: center;height: 100%">
+                    <button type="button" class="layui-btn layui-btn-primary moneyBtn" style="min-width: 70px;" score="30">300</button>
+                    <button type="button" class="layui-btn layui-btn-primary moneyBtn" style="min-width: 70px;" score="50">500</button>
+                    <button type="button" class="layui-btn layui-btn-primary moneyBtn" style="min-width: 70px;" score="70">700</button>
+                    <br>
+                    <button type="button" class="layui-btn layui-btn-primary moneyBtn" style="min-width: 70px;margin-top: 10px;" score="100">1000</button>
+                    <button type="button" class="layui-btn layui-btn-primary moneyBtn" style="min-width: 70px;margin-top: 10px;" score="150">1500</button>
+                    <button type="button" class="layui-btn layui-btn-primary moneyBtn" style="min-width: 70px;margin-top: 10px;" score="200">2000</button>
+                    <p style="margin: 2px 0;font-size:12px;height: 24px" id="score"></p>
+                    <button type="button" class="layui-btn layui-btn-normal" id="submitBtn">确认交易</button>
+                    <button type="button" class="layui-btn layui-btn-normal" id="cancelBtn">取消交易</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['layer'],function () {
+        var layer = layui.layer, $ = layui.jquery;
+
+        var flag = false;
+        var score = 0;
+        var rechargeMoney = 0;
+        //获取本用户的VIP标识
+        var isVip = $("#isVip").val();
+
+        /**
+         * 单击金额按钮的响应
+         */
+        $(".moneyBtn").click(function () {
+            var className = $(this).attr("class");
+            if(className.indexOf("layui-btn-primary") > 0){
+                //移除默认的白色，使其变成绿色
+                $(this).removeClass("layui-btn-primary");
+                //同时移除其他兄弟元素的绿色，使其变成白色
+                $(this).siblings(".moneyBtn").addClass("layui-btn-primary");
+                //判断是否是VIP如果是要进行赠送积分操作
+                if(isVip == 1) {
+                    //同时显示本次充值获得的积分
+                    $("#score").html("本次充值可获得积分：<span style='color: red'>" + $(this).attr("score") + "</span>");
+                    score = $(this).attr("score");
+                }
+                rechargeMoney = $(this).text();
+                //改变标记
+                flag = true;
+            }else{
+                $(this).addClass("layui-btn-primary");
+                $("#score").html("");
+                //改变标记
+                flag = false;
+            }
+        });
+
+        /**
+         * 绑定确认交易按钮
+         */
+        $("#submitBtn").click(function () {
+            //会员用户提示
+            var msg = '充值金额为：<span style="color: red">¥'+rechargeMoney+'</span>，' +
+                '可获得会员积分：<span style="color: red">'+score+'</span>，确定支付吗？';
+            //非会员用户提示
+            if(isVip == 0){
+                msg = '充值金额为：<span style="color: red">¥'+rechargeMoney+'</span>，确定支付吗？'
+            }
+            if(flag) {
+                layer.confirm(msg, {
+                    btn: ['确定', '取消']
+                }, function () {
+                    //会员用户的充值路径
+                    var url = 'addClientScore?score='+score+'&money='+rechargeMoney;
+                    //非会员用户的充值路径
+                    if(isVip == 0){
+                        url = 'addClientScore?money='+rechargeMoney;
+                    }
+                    $.getJSON(
+                        url
+                        ,function (data) {
+                            if(data.result == "success"){
+                                layer.confirm('恭喜你！充值成功！',{
+                                    title: '消息提示'
+                                    ,icon:6
+                                    ,btn: ['确定']
+                                },function () {
+                                    layer.closeAll();
+                                    window.parent.location.reload();
+                                });
+                            }else{
+                                layer.confirm({
+                                    title: '消息提示'
+                                    ,content: '抱歉！充值失败！请稍后再试！'
+                                    ,icon:5
+                                    ,btn: ['确定']
+                                },function () {
+                                    window.parent.location.reload();
+                                });
+                            }
+                        }
+                    )
+                });
+            }else{
+                layer.open({
+                    title: '错误提示'
+                    ,content: '请先选择您要充值的金额！'
+                    ,icon:5
+                    ,anim:6
+                });
+            }
+        });
+
+        /**
+         * 绑定取消交易
+         */
+        $("#cancelBtn").click(function () {
+            window.parent.location.reload();
+        });
+    })
+</script>
+</body>
+</html>

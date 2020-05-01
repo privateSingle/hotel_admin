@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.li.mapper.HouseTypeMapper">
+  <resultMap id="BaseResultMap" type="cn.li.pojo.HouseType">
+    <!--@mbg.generated-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="type_name" jdbcType="VARCHAR" property="typeName" />
+    <result column="price" jdbcType="INTEGER" property="price" />
+    <result column="house_img" jdbcType="VARCHAR" property="houseImg" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="remain" jdbcType="INTEGER" property="remain" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, type_name, price, house_img, `count`, remain, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from house_type
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--@mbg.generated-->
+    delete from house_type where id IN (${id})
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.li.pojo.HouseType" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into house_type (type_name, price, house_img, 
+      `count`, remain, remark
+      )
+    values (#{typeName,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER}, #{houseImg,jdbcType=VARCHAR}, 
+      #{count,jdbcType=INTEGER}, #{remain,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.li.pojo.HouseType" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into house_type
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="typeName != null">
+        type_name,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="houseImg != null">
+        house_img,
+      </if>
+      <if test="count != null">
+        `count`,
+      </if>
+      <if test="remain != null">
+        remain,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="typeName != null">
+        #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="houseImg != null">
+        #{houseImg,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="remain != null">
+        #{remain,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.li.pojo.HouseType">
+    <!--@mbg.generated-->
+    update house_type
+    <set>
+      <if test="typeName != null">
+        type_name = #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null and price != 0">
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="houseImg != null">
+        house_img = #{houseImg,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null and count != 0">
+        `count` = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="remain != null and remain != 0">
+        remain = #{remain,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.li.pojo.HouseType">
+    <!--@mbg.generated-->
+    update house_type
+    set type_name = #{typeName,jdbcType=VARCHAR},
+      price = #{price,jdbcType=INTEGER},
+      house_img = #{houseImg,jdbcType=VARCHAR},
+      `count` = #{count,jdbcType=INTEGER},
+      remain = #{remain,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectAllHouseType" resultMap="BaseResultMap">
+    select * from house_type
+  </select>
+  <select id="getHouseTypeCount" resultType="java.lang.Integer">
+    select count(1) from house_type
+  </select>
+
+
+
+  <update id="updateHouseTypeCount">
+    update house_type set `count`=`count`-#{count} where id=#{id}
+  </update>
+
+  <update id="updateHouseType">
+    update house_type
+    <set>
+      <if test="type==0">
+        `count`=`count`-1,
+        remain=remain-1
+      </if>
+      <if test="type==1">
+        `count`=`count`+1,
+        remain=remain+1
+      </if>
+    </set>
+    where id=#{id}
+  </update>
+  <update id="updateHouseTypeRemain">
+    update house_type
+    <set>
+      <if test="type==0">
+        remain=remain-1
+      </if>
+      <if test="type==1">
+        remain=remain+1
+      </if>
+    </set>
+    where id=#{id}
+  </update>
+
+  <update id="updateHouseRemain">
+    update house_type
+    set remain=remain-#{remain}
+    where id=#{id}
+  </update>
+
+</mapper>

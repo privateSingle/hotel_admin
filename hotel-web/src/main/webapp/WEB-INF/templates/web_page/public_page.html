@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script th:src="@{/js/web_page/jquery-2.1.4.min.js}"></script>
+    <script th:src="@{/lib/layui/layui.js}"></script>
+    <style>
+        #clientOperation{
+            list-style-type: none;
+        }
+    </style>
+</head>
+<body>
+<nav th:frament="header" id="header" class="header">
+    <div class="fixed-header">
+
+        <div class="navbar-wrapper">
+            <div class="container">
+                <nav class="navbar navbar-inverse navbar-static-top" style="font-size: 16px;">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <div class="logo wow slideInLeft" data-wow-delay="0.3s">
+                            <a class="navbar-brand" href="index.html"><img th:src="@{/images/logo.png}" /></a>
+                        </div>
+                    </div>
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <nav class="cl-effect-16" id="cl-effect-16">
+                            <ul class="nav navbar-nav">
+                                <li>
+                                    <a class="active" th:href="@{initPage}" data-hover="首页" th:if="${barType == 'index'}">首页</a>
+                                    <a th:href="@{initPage}" data-hover="首页" th:if="${barType != 'index'}">首页</a>
+                                </li>
+                                <li>
+                                    <a th:href="@{room}" data-hover="房间预定" th:if="${barType == 'room' || barType == 'single'}" class="active">房间预定</a>
+                                    <a th:href="@{room}" data-hover="房间预定" th:if="${barType != 'room' && barType != 'single'}">房间预定</a>
+                                </li>
+                                <li>
+                                    <a class="active" href="javascript:;" data-hover="餐品预订" th:if="${barType == 'product'}" id="product">餐品预订</a>
+                                    <a href="javascript:;" data-hover="餐品预订" th:if="${barType != 'product'}" id="product">餐品预订</a>
+                                   <!-- <a  th:if="${msg != null}" tabindex="0"  role="button" data-toggle="popover" data-trigger="focus" data-placement="bottom" data-content="请先入住">餐品预订</a>-->
+                                </li>
+                                <li>
+                                    <a class="active" th:href="@{about}" th:if="${barType == 'about'}" data-hover="关于我们">关于我们</a>
+                                    <a th:href="@{about}" th:if="${barType != 'about'}" data-hover="关于我们">关于我们</a>
+                                </li>
+                                <li><a href="javascript:;">|</a> </li>
+                                <li style="position: relative" id="clientLi">
+                                    <a th:href="@{webLogin}" data-hover="请登录" th:if="${session.clientUser == null}" style="max-width:82px;">请登录</a>
+                                    <a href="javascript:;" th:if="${session.clientUser != null}" th:text="${session.clientUser.name}" id="clientInfo" style="max-width:82px;"></a>
+                                    <ul class="clientOperation" id="clientOperation" th:if="${session.clientUser != null}" style="list-style:none; max-width: 82px;font-size: 14px;padding: 0px;display: none">
+                                        <li><a href="" th:href="@{member/memberIndexPage}" data-hover="个人中心" style="color: #000">个人中心</a></li>
+                                        <li><a th:href="@{webLoginOut}" data-hover="退出登录" style="color: #000">退出登录</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="clearfix"> </div>
+                </nav>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+
+            var clickFlag = 1;
+
+            $("#clientLi").click(function () {
+                if(clickFlag == 1) {
+                    $("#clientOperation").slideDown(500);
+                    clickFlag = 0;
+                }else{
+                    $("#clientOperation").slideUp(500);
+                    clickFlag = 1;
+                }
+            });
+            $('[data-toggle="popover"]').popover();
+
+            /**
+             * 鼠标移上判断有无入住
+             */
+            $("#product").mouseover(function () {
+                $.getJSON("productPageSkip",function (data) {
+                    if (data.result == "error"){
+                        // $("#product").attr("disabled",true).css("pointer-events","none");
+                        layui.use('layer',function () {
+                            var layer = layui.layer;
+                            layer.tips('请先预订房间!','#product',{tips: 3})
+                        });
+                    }else{
+                        $("#product").bind("click",function () {
+                            clickMethodProduct();
+                        })
+                    }
+                })
+            });
+
+            /**
+             * 跳转至餐品预定页面
+             */
+            function clickMethodProduct() {
+                window.location.href = "productPage";
+            }
+        })
+    </script>
+</nav>
+
+
+
+<div th:frament="footer" id="footer" class="footer" style="margin-top: 15px;">
+    <div class="container">
+        <div class="footer-main">
+            <div class="col-md-3 ftr-grid wow zoomIn" data-wow-delay="0.3s">
+                <div class="ftr-logo">
+                    <img th:src="@{/images/ftr-logo.png}"  alt="">
+                </div>
+                <p style="font-size: 14px">
+                    Mr Hotels是私人投入巨资新建的顶级休闲会所，集餐饮、娱乐、洗浴、茶坊、客房为一体，酒店座落于山西省运城市。
+                    隐逸在城市和乡村的边缘，Mr Hotels独享着不可复制的天生静谧与悠然。
+                    一步是都市，一步是田野，酒店将竭力打造成为高档的、阳光的、尊贵的顶级休闲度假会所
+                </p>
+            </div>
+            <div class="col-md-3 ftr-grid ftr-mid wow zoomIn" data-wow-delay="0.3s">
+                <h3>地址</h3>
+                <span class="ftr-line flm"> </span>
+                <p style="font-size: 14px">山西省运城市盐湖区安逸东路108号</p>
+                <p style="font-size: 14px">邮编：044000</p>
+                <p style="font-size: 14px">联系电话：0359-XXXXXXX</p>
+
+            </div>
+            <div class="col-md-3 ftr-grid ftr-rit wow zoomIn" data-wow-delay="0.3s">
+                <h3>联系我们</h3>
+                <form>
+                    <input type="text" value="Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email';}">
+                    <input type="submit" value="Send" />
+                </form>
+                <ul class="ftr-icons">
+                    <li><a href="javascript:;"><span class="fa"> </span></a></li>
+                    <li><a href="javascript:;"><span class="tw"> </span></a></li>
+                    <li><a href="javascript:;"><span class="link"> </span></a></li>
+                    <li><a href="javascript:;"><span class="gmail"> </span></a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 ftr-grid ftr-last-gd ftr-rit wow zoomIn" data-wow-delay="0.3s">
+                <h3>快速链接</h3>
+                <ul class="ftr-nav" style="font-size: 0.9em;font-family: 'Hind', sans-serif;">
+                    <li><a th:href="@{initPage}">首页</a></li>
+                    <li><a th:href="@{room}">房间预定</a></li>
+                    <li><a th:href="@{about}">关于我们</a></li>
+                    <li><a th:href="@{login}">网站后台</a></li>
+                </ul>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+</div>
+<!--copy rights start here-->
+<div class="copy-right"  th:frament="copy-right" id="copy-right">
+    <div class="container">
+        <div class="copy-rights-main wow zoomIn" data-wow-delay="0.3s">
+            <p style="font-size: 1em;font-family: 'Hind', sans-serif;">Copyright &copy; 2020.Author：Mr.Wang, All rights reserved.More 仿冒/复制必究</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

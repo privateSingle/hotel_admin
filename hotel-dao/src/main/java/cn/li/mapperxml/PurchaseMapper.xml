@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.li.mapper.PurchaseMapper">
+  <resultMap id="BaseResultMap" type="cn.li.pojo.Purchase">
+    <!--@mbg.generated-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="price" jdbcType="INTEGER" property="price" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="purchase_date" property="purchaseDate" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="total_price" jdbcType="INTEGER" property="totalPrice" />
+    <association property="product" javaType="cn.li.pojo.Product">
+      <id column="p_id" jdbcType="INTEGER" property="id" />
+      <result column="p_name" jdbcType="VARCHAR" property="name" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, product_id, price, `count`, purchase_date, unit,total_price
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from purchase
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from purchase
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.li.pojo.Purchase" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    <!--@mbg.generated-->
+    insert into purchase (id, product_id, price,
+      `count`, purchase_date, unit,total_price
+      )
+    values (#{id,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{price,jdbcType=INTEGER},
+      #{count,jdbcType=INTEGER}, #{purchaseDate,jdbcType=TIMESTAMP}, #{unit,jdbcType=VARCHAR},#{totalPrice,jdbcType=INTEGER}
+      )
+  </insert>
+  <!--<insert id="insertOneTest" parameterType="org.chench.test.mybatis.model.Test" useGeneratedKeys="true" keyProperty="id" keyColumn="id" >
+    insert into test(name,descr,url,create_time,update_time)
+    values(#{name},#{descr},#{url},now(),now())
+  </insert>-->
+  <insert id="insertSelective" parameterType="cn.li.pojo.Purchase">
+    <!--@mbg.generated-->
+    insert into purchase
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="count != null">
+        `count`,
+      </if>
+      <if test="purchaseDate != null">
+        purchase_date,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="purchaseDate != null">
+        #{purchaseDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.li.pojo.Purchase">
+    <!--@mbg.generated-->
+    update purchase
+    <set>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="count != null">
+        `count` = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="purchaseDate != null">
+        purchase_date = #{purchaseDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.li.pojo.Purchase">
+    <!--@mbg.generated-->
+    update purchase
+    set product_id = #{productId,jdbcType=INTEGER},
+      price = #{price,jdbcType=INTEGER},
+      `count` = #{count,jdbcType=INTEGER},
+      purchase_date = #{purchaseDate,jdbcType=TIMESTAMP},
+      unit = #{unit,jdbcType=VARCHAR},
+      total_price = #{totalPrice,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="findAllPurchase" resultMap="BaseResultMap" parameterType="string">
+    select pu.id, pu.product_id, pu.price, pu.`count`, DATE(pu.purchase_date) as purchase_date, pu.unit,pu.total_price
+    ,pr.id as p_id,pr.name as p_name from purchase pu,product pr
+    where pu.product_id = pr.id
+    <if test="name != null and name != ''">
+      and pr.name LIKE concat('%',#{name,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="time != null and time != ''">
+      and pu.purchase_date LIKE binary concat('%',#{time},'%')
+    </if>
+  </select>
+  <select id="findAllPurchaseCount" resultType="int">
+    select count(*) from purchase pu,product pr
+    where pu.product_id = pr.id
+    <if test="name != null and name != ''">
+      and pr.name LIKE concat('%',#{name,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="time != null and time != ''">
+      and pu.purchase_date LIKE binary concat('%',#{time},'%')
+    </if>
+  </select>
+  <delete id="delPurchaseInfo">
+    delete from purchase where id in (${Ids})
+  </delete>
+</mapper>

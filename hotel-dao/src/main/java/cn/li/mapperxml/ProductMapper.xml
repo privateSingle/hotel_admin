@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.li.mapper.ProductMapper">
+  <resultMap id="BaseResultMap" type="cn.li.pojo.Product">
+    <!--@mbg.generated-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="price" jdbcType="INTEGER" property="price" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="product_type" jdbcType="INTEGER" property="productType" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="product_picture" jdbcType="VARCHAR" property="productPicture" />
+    <association property="productTypeBean" javaType="cn.li.pojo.ProductType">
+      <id property="id" column="type_id"></id>
+      <result property="name" column="p_name"></result>
+    </association>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, `name`, `count`, unit, product_type, price, status,product_picture
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select p.*,t.id type_id,t.name p_name from product p,product_type t
+    where p.product_type = t.id and p.id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from product
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.li.pojo.Product" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into product (`name`,unit,price,status,
+      product_type,product_picture)
+    values (#{name,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER},#{status,jdbcType=INTEGER},
+      #{productType,jdbcType=INTEGER},#{productPicture,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.li.pojo.Product" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="count != null">
+        `count`,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+      <if test="productType != null">
+        product_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null">
+        #{productType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.li.pojo.Product">
+    <!--@mbg.generated-->
+    update product
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null">
+        `count` = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null">
+        product_type = #{productType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.li.pojo.Product">
+    <!--@mbg.generated-->
+    update product
+    set `name` = #{name,jdbcType=VARCHAR},
+       status = #{status,jdbcType=INTEGER},
+      unit = #{unit,jdbcType=VARCHAR},
+      price = #{price,jdbcType=INTEGER},
+      product_type = #{productType,jdbcType=INTEGER},
+    product_picture = #{productPicture,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--查询全部商品信息-->
+  <select id="finAllProduct" resultMap="BaseResultMap" parameterType="cn.li.pojo.Product">
+    select p.*,t.id type_id,t.name p_name from product p,product_type t
+    where p.product_type = t.id
+    <if test="name != null and name != ''">
+      and p.name LIKE concat('%',#{name,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="productType != null">
+      and t.id = #{productType,jdbcType=INTEGER}
+    </if>
+    order by p.id asc
+  </select>
+  <select id="findAllProductCount" resultType="int" parameterType="cn.li.pojo.Product">
+    select count(*) from product_type t,product p
+    where p.product_type = t.id
+    <if test="name != null and name != ''">
+      and p.name LIKE concat('%',#{name,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="productType != null">
+      and t.id = #{productType,jdbcType=INTEGER}
+    </if>
+  </select>
+  <delete id="deleteProductInfo">
+    delete from product
+    where id in (${ids})
+  </delete>
+    <select id="findProductInfoByIds" resultMap="BaseResultMap">
+        select p.*,t.id type_id,t.name p_name from product p,product_type t
+        where p.product_type = t.id and p.id in (${ids})
+    </select>
+  <update id="editProductCount">
+    update product
+    set count = count+#{count}
+    where id = #{id}
+  </update>
+    <select id="findProductByProductIds" resultMap="BaseResultMap">
+      select * from product
+      WHERE product_type
+      IN (SELECT id FROM product_type WHERE id in (${ids}))
+    </select>
+    <update id="updateProductCountById">
+      update product
+      set count = count-#{count}
+      where id = #{id}
+    </update>
+</mapper>

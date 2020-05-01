@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>客房管理--添加页面</title>
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}">
+    <!--引入外部图标库-->
+    <link rel="stylesheet" th:href="@{/lib/layui/myicons/iconfont.css}">
+    <script th:src="@{/lib/layui/layui.js}"></script>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <style>
+        .layui-form-pane .layui-form-text .layui-textarea {
+            min-height: 80px;
+            max-height: 80px;
+        }
+        .div_show{
+            transform: translate(-2000px);
+            transition: all 0.8s;
+        }
+        .div_hide{
+            transform: translate(2000px);
+            transition: all 1.5s;
+        }
+        .photo-viewer{
+            margin: 50px 0;
+            text-align: center;
+        }
+        .img-reveal{
+            display: inline-block;
+            margin: 0px 8px;
+        }
+        .form-info{
+            margin: 15px;
+            position: relative;
+            overflow: hidden
+        }
+        @media screen and (-webkit-min-device-pixel-ratio:0) {
+            .form-info{
+                margin: 12px;
+            }
+        }
+        .layui-form-select dl { max-height:200px; }
+    </style>
+</head>
+<body style="height: 100%">
+<!--该隐藏字段为了标识本次新增的内容是什么-->
+<input type="hidden" id="add-type" th:value="${type}">
+<!-- -------------------------------------------------------新增客房类型信息 Start------------------------------------------------------- -->
+<!--表单-->
+<form class="layui-form layui-form-pane form-info addForm" th:if="${type=='houseType'}" action="" add-url="addHouseType">
+    <div id="product_info" style="width:100%">
+        <div class="layui-form-item">
+            <div class="layui-form-item">
+                <label class="layui-form-label">客房类型</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="typeName" lay-verify="required" placeholder="请输入客房类型" autocomplete="off"
+                      class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">价格</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="price" lay-verify="required" placeholder="请输入客房类型价格" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">客房描述</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="remark" lay-verify="required" placeholder="请输入客房类型描述" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item" style="margin-top:15px;width:500px;">
+        <label class="layui-form-label">客房图片</label>
+        <div class="layui-upload">
+            <button type="button" class="layui-btn layui-btn-normal" id="test1" >选择图片</button>
+            <div class="layui-upload-list">
+                <img class="layui-upload-img" id="demo1" style="height: 200px;width: 75%;">
+                <p id="demoText"></p>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" value="0" name="count">
+    <input type="hidden" value="0" name="remain">
+
+    <div class="content-input">
+        <input type="button" value="提交" name="submit" class="layui-btn addBtn">
+        <input type="reset" class="layui-btn" value="清空">
+    </div>
+    <!-- -------------------------------------------------------新增客房类型信息 END------------------------------------------------------- -->
+</form>
+    <!-- -------------------------------------------------------新增客房信息 start------------------------------------------------------- -->
+<form class="layui-form addForm" th:if="${type=='house'}" action=""  add-url="addHouseInfo">
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">客房号</label>
+            <div class="layui-input-inline">
+                <input type="tel" name="houseCode" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">客房类型</label>
+            <div class="layui-input-inline">
+                <select name="typeId">
+                    <!--<option>请选择客房类型</option>-->
+                    <div  th:each="houseType:${houseTypes}">
+                        <option th:value="${houseType.id}" th:text="${houseType.typeName}"></option>
+                    </div>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="button" class="layui-btn addBtn" lay-submit="" lay-filter="demo1">添加</button>
+        </div>
+    </div>
+</form>
+<!-- -------------------------------------------------------新增客房信息 END------------------------------------------------------- -->
+
+<script>
+    layui.use(['form','upload'], function () {
+        var $ = layui.jquery
+            , layer = layui.layer
+            , upload = layui.upload;
+
+        /**
+         * 单击提交事件
+         */
+        $(".addBtn").click(function () {
+            //获取表单数据
+            var addData = $(".addForm").serialize();
+            //获取提交的url
+            var url = $(".addForm").attr("add-url");
+            //ajax提交
+            /* if(flag.trim().length == 0) {*/
+            $.post(url,
+                addData,
+                function (rollData) {
+                message(rollData,$("#add-type").val());
+            });
+        });
+
+        /**
+         * 消息提示
+         */
+        function message(data,type){
+            switch(type){
+                case "houseType":
+                    if (data.result == "success") {
+                        layer.confirm(data.msg,{
+                            btn:['确定']  //按钮
+                            , skin: 'layui-layer-lan'
+                            , icon: 6
+                        },function () {
+                            window.parent.location.reload();    //刷新父页面
+                        });
+                    } else {
+                        layer.confirm(data.msg,{
+                            btn:['确定']  //按钮
+                            , skin: 'layui-layer-lan'
+                            , icon: 5
+                            , anim: 6
+                        },function () {
+                            window.parent.location.reload();    //刷新父页面
+                        });
+                    }
+                    break;
+                case "house":
+                    if (data.result == "success") {
+                        layer.confirm(data.msg,{
+                            btn:['确定']  //按钮
+                            , skin: 'layui-layer-lan'
+                            , icon: 6
+                        },function () {
+                            window.parent.location.reload();    //刷新父页面
+                        });
+                    } else {
+                        layer.confirm(data.msg,{
+                            btn:['确定']  //按钮
+                            , skin: 'layui-layer-lan'
+                            , icon: 5
+                            , anim: 6
+                        },function () {
+                            window.parent.location.reload();    //刷新父页面
+                        });
+                    }
+                    break;
+                case "petType":
+                    if (result == "success") {
+                        layer.msg('新增宠物类型成功！');
+                        setTimeout(function () {
+                            window.parent.location.reload();    //刷新父页面
+                        }, 1000);
+                    } else {
+                        layer.msg('新增宠物类型失败！');
+                        setTimeout(function () {
+                            window.parent.location.reload();    //刷新父页面
+                        }, 1000);
+                    }
+                    break;
+            }
+        }
+
+
+    })
+    layui.use('upload', function(){
+        var $ = layui.jquery
+            ,upload = layui.upload;
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1'
+            ,url: 'addHouseTypeImg'
+            ,size:2048
+            ,acceptMime:'image/jpg, image/jpeg, image/png, image/gif'       //上传所有类型的图片
+            //限制文件大小为2M
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                //上传成功
+                if (res.result == "success"){
+                    layer.confirm('上传图片成功！',{
+                        btn:['确定']  //按钮
+                        , skin: 'layui-layer-lan'
+                        , icon: 6
+                    });
+                    console.log(res.success);
+                }else{
+                    console.log(res.error)
+                }
+
+
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

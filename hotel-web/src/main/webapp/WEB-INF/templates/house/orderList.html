@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}">
+    <!--引入外部图标库-->
+    <link rel="stylesheet" th:href="@{/lib/layui/myicons/iconfont.css}">
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <style>
+        .content-input {
+            width: 12%;
+            min-width: 170px;
+            display: inline-block;
+        }
+
+        .content-input-01,.content-input-02,.content-input-03,.content-input-04 {
+            width: 20%;
+            min-width: 330px;
+        }
+
+        @media screen and (-webkit-min-device-pixel-ratio: 0) {
+            .content-input-01,.content-input-02,.content-input-03,.content-input-04 {
+                width: 21%;
+                min-width: 340px;
+            }
+        }
+
+        @media screen and (max-width: 1560px) {
+            .content-button{
+                margin-top: 10px;
+            }
+        }
+
+        @media screen and (max-width: 900px) {
+            .content-button,.content-input-03,.content-input-04{
+                margin-top: 10px;
+            }
+        }
+
+        @media screen and (max-width: 700px) {
+            .content-input-02,.content-button,.content-input-03,.content-input-04{
+                margin-top: 10px;
+            }
+            .content-button{
+                display: block;
+            }
+            .layui-laypage button {
+                 margin-left:2px;
+                 padding:0 5px;
+                 cursor:pointer
+            }
+            .layui-laypage input {
+                width:35px;
+                margin:0 2px;
+                padding:0 3px;
+                text-align:center
+            }
+            .layui-laypage .layui-laypage-skip {
+                margin-left:5px;
+                margin-right:10px;
+                padding:0;
+                border:none
+            }
+            .layui-laypage .layui-laypage-refresh {
+                margin-left:10px;
+                margin-right:0px;
+                padding:0;
+                border:none;
+                vertical-align: middle;
+            }
+            .layui-laypage .layui-laypage-count {
+                margin-left:10px;
+                margin-right:3px;
+                padding:0;
+                border:none
+            }
+            .layui-laypage a,
+            .layui-laypage span {
+                display:inline-block;
+                *display:inline;
+                *zoom:1;
+                vertical-align:middle;
+                padding:0 10px;
+                height:24px;
+                line-height:24px;
+                margin:0 -1px 5px 0;
+                background-color:#fff;
+                color:#333;
+                font-size:12px
+            }
+        }
+
+        .layui-form-checkbox[lay-skin="primary"] {
+            padding-left: 22px;
+        }
+
+        .layui-layer-my-molv .layui-layer-btn a {
+            background: #009f95;
+            border-color: #009f95
+        }
+
+        .layui-layer-my-molv .layui-layer-btn .layui-layer-btn1 {
+            background: #FFF
+        }
+    </style>
+</head>
+<body>
+
+<div style="padding: 0 10px">
+
+    <!--查询条件表单-->
+    <form class="layui-form layui-form-pane" id="searchFrom" action="" style="margin-bottom: 10px;">
+        <!--宠物名-->
+        <!--<div class="layui-form-item">-->
+
+        <div class="layui-row" style="margin-top: 10px">
+            <div class="content-input content-input-01">
+                <label class="layui-form-label">订单号</label>
+                <div class="layui-input-inline" style="margin-right: 30px;">
+                    <input id="orderCodeId" type="text" name="orderCode" lay-verify="required" placeholder="请输入订单号" autocomplete="off" class="layui-input" style="width: 186px;">
+                </div>
+            </div>
+
+            <div class="content-input content-input-02">
+                <label class="layui-form-label">客人名字</label>
+                <div class="layui-input-inline" style="margin-right: 30px;">
+                    <input id="clientName" type="text" name="clientName" lay-verify="required" placeholder="请输入客人名字" autocomplete="off" class="layui-input" style="width: 186px;">
+                </div>
+            </div>
+
+            <div class="content-input content-input-03">
+                <!--房间状态-->
+                <label class="layui-form-label">订单状态</label>
+                <div class="layui-input-inline" style="margin-right: 30px;">
+                    <select name="orderStatus" id="varieties">
+                        <option value="">请选择房间状态</option>
+                        <option value="0">已预订</option>
+                        <option value="1">已完成</option>
+                        <option value="2">已取消</option>
+                        <option value="3">已入住</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="content-input content-button">
+                <input type="button" class="layui-btn layui-btn-normal" id="searchBtn" value="查询" style="margin-right: 1%">
+                <input type="reset" class="layui-btn layui-btn-normal" value="清空">
+            </div>
+        </div>
+        <!--</div>-->
+    </form>
+    <table class="layui-hide" id="listInfo" lay-filter="listInfo"></table>
+
+    <script id="operationBar" type="text/html">
+        {{# if(d.orderStatus == 0){}}
+        <a class="layui-btn layui-btn-sm layui-btn-normal" lay-event="allot">分房</a>
+        {{# }}}
+    </script>
+
+</div>
+
+<script th:src="@{/lib/layui/layui.js}"></script>
+</body>
+</html>
+
+
+
+
+<script>
+    layui.use(['table','form'], function(){
+        var table = layui.table
+            ,form = layui.form;
+
+        var tableIns = $("#listInfo");
+
+        reloadMethod('getOrderList');
+
+        /**
+         * 初始化加载方法
+         */
+        function reloadMethod(urlData) {
+            tableIns = table.render({
+                elem: '#listInfo'
+                , url: urlData
+                // , toolbar: '#operationBar' //开启工具栏
+                , limit: 20
+                , height: 'full-78'
+                , defaultToolbar: ['filter', 'exports', 'print']
+                , title: '订单数据表'
+                , cols: [
+                    [
+                        {field: 'orderCode',title: '订单号', fixed: 'left', unresize: true, sort: true,templet:'<div>{{d.orderCode}}</div>'}
+                        , {field: '', title: '客人姓名', sort: true,templet:'<div>{{d.client.name}}</div>'}
+                        , {field: 'reserverCount', title: '预定房间数', sort: true,templet:'<div>{{d.reserverCount}}</div>'}
+                        , {field: 'money', title: '订单价格', sort: true,templet:'<div>￥{{d.money/100}}</div>'}
+                        , {field: 'create_date', title: '订单创建时间', sort: true,templet:'<div>{{d.createDate}}</div>'}
+                        , {field: 'order_status', title: '订单状态', sort: true,templet:'<div>{{d.orderStatus==0?"已预定":d.orderStatus==1?"已完成":d.orderStatus==2?"已取消":"已入住"}}</div>'}
+                        , {field: 'caozuo', title: '操作', sort: true,toolbar:'#operationBar'}
+                    ]
+                ]
+                , page: { //支持传入 laypage 组件的所有参数
+                    layout: ['count','limit','prev', 'page', 'next', 'skip','refresh'] //自定义分页布局
+                    //,curr: 5 //设定初始在第 5 页
+                    ,groups: 5 //只显示 5 个连续页码
+                    , theme:'#08F'
+                    , first: '首页' //显示首页
+                    , last: '尾页' //显示尾页
+                }
+            });
+        }
+
+        /**
+         *  点击查询按钮后重新加载表格
+         */
+        $("#searchBtn").click(function () {
+            var datas = $("#searchFrom").serialize();
+            var url = 'getOrderList?'+datas;
+            reloadMethod(url);
+        });
+        //头工具栏事件
+        table.on('tool(listInfo)', function(obj){
+            var orderId = obj.data.id;
+            var houseTypeId = obj.data.houseTypeId;
+            var houseTypeName = obj.data.typeName;
+            var reserveCount = obj.data.reserverCount;
+            switch(obj.event){
+                case 'allot':
+                    layer.open({
+                        type: 2,
+                        title: '客房状态信息',
+                        shadeClose: true,
+                        shade: 0.3,
+                        maxmin: true, //开启最大化最小化按钮
+                        area: ['60%', '80%'],
+                        //跳转至控制器处理houseController客房控制层请求通知将result返回的ID传入进行客房信息的查询
+                        content:'openHouseAssignment?houseTypeId='+houseTypeId+'&houseTypeName='+houseTypeName+'&reserveCount='+reserveCount+'&orderId='+orderId,
+                        skin: 'layui-layeRIr-molv'
+                    });
+                    break;
+            }
+        });
+
+    });
+</script>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script th:src="@{/lib/layui/layui.js}"></script>
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}" />
+</head>
+<body>
+    <form action="" class="layui-form layui-form-pane" style="padding: 15px" id="sendForm">
+
+        <input type="hidden" th:value="${orderId}" name="orderId">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="min-width: 150px;">入住房间类型</label>
+            <div class="layui-input-inline">
+                <select name="houseTypeId" disabled="true">
+                    <option th:each="type:${typeList}" th:value="${type.id}"
+                            th:selected="${type.id == typeId?'true':'false'}" th:text="${type.typeName}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">评价内容</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea" name="content" style="height: 150px;resize: none"></textarea>
+            </div>
+        </div>
+
+        <div>
+            <input type="button" class="layui-btn layui-btn-normal" id="submitBtn" value="提交评价">
+            <input type="button" class="layui-btn layui-btn-normal" id="cancelBtn" value="取消评价">
+        </div>
+    </form>
+    <script>
+        layui.use(['layer','form'],function () {
+            var form = layui.form, $ = layui.jquery, layer = layui.layer;
+
+            /**
+             * 响应取消按钮
+             */
+            $("#cancelBtn").click(function () {
+                window.parent.location.reload();
+            });
+
+            /**
+             * 响应确定按钮
+             */
+            $("#submitBtn").click(function () {
+                //非空验证
+                if($("textarea[name='content']").val().trim().length == 0){
+                    layer.confirm('请填写评价内容！',{
+                        title: '错误提示'
+                        ,icon:5
+                        ,anim:6
+                        ,btn:['确定']
+                    });
+                    return;
+                }
+                //将下拉框改为可用，否则无法获取下拉框的数据
+                $("select[name='houseTypeId']").removeAttr("disabled");
+                //获取表单信息
+                var sendData = $("#sendForm").serialize();
+                $.getJSON(
+                    'insertCommentInfo?'+sendData,
+                    function (data) {
+                        if(data.result == "success"){
+                            layer.confirm('评价成功！感谢您的宝贵评价！',{
+                                title: '消息提示'
+                                ,icon:6
+                                ,btn: ['确定']
+                            },function () {
+                                layer.closeAll();
+                                window.parent.location.reload();
+                            });
+                        }else{
+                            layer.confirm('评价失败！请稍后再试！',{
+                                title: '消息提示'
+                                ,icon:5
+                                ,anim:6
+                                ,btn: ['确定']
+                            },function () {
+                                layer.closeAll();
+                                window.parent.location.reload();
+                            });
+                        }
+                    }
+                )
+            });
+        })
+    </script>
+</body>
+</html>

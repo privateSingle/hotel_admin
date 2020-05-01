@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}">
+    <script th:src="@{/lib/layui/layui.js}"></script>
+    <style>
+        *{padding: 0;margin: 0;list-style: none;}
+        .max{
+            border: 1px solid #bbb;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px #ddd;
+            max-height: 200px;
+            margin: 20px;
+            overflow-y: scroll;
+        }
+        .footer{
+            margin: 0 20px;
+        }
+        .left{
+            float: left;
+            line-height: 38px;
+        }
+        .left span:first-of-type{
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .left span:last-of-type{
+            font-weight: bold;
+            font-size: 20px;
+            color: red;
+        }
+        .right{
+            float: right;
+        }
+        .li_left{
+            float: left;
+            width: 49%;
+            height: 50px;
+            /*background-color: #00ACEE;*/
+        }
+        .li_right{
+            float: right;
+            width: 49%;
+            height: 50px;
+           /* background-color: red;*/
+        }
+    </style>
+</head>
+<body>
+    <!--<form action="#">-->
+        <div class="house" style="margin-top: 5px">
+            <form class="layui-form" action="">
+                <div class="layui-inline">
+                    <label class="layui-form-label">请选择房号:</label>
+                    <div class="layui-input-inline">
+                        <select name="modules" lay-verify="required" lay-search="">
+                            <option value="0">直接选择或搜索选择</option>
+                            <option th:each="house:${houseCode}" th:value="${house}" th:text="${house}"></option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="max">
+            <ul class="content" style="padding: 15px 10px 0px;border-bottom: 1px solid #ccc; overflow: hidden;" th:each="buyCar:${buyCarInfo}">
+                <li>
+                    <input name="proId" type="hidden" th:value="${buyCar.proId}">
+                    <input name="proType" type="hidden" th:value="${buyCar.proType}">
+                    <input name="count" type="hidden" th:value="${buyCar.count}">
+                    <input name="price" type="hidden" th:value="${buyCar.price}">
+                    <div class="li_left">
+                        <ul>
+                            <li style="font-size: 16px;margin-bottom: 5px;" th:text="${buyCar.name}"></li>
+                            <li style="font-size: 12px; color: #888;">单价：¥[[${buyCar.price}/100]]</li>
+                        </ul>
+                    </div>
+                    <div class="li_right">
+                        <input type="hidden" th:value="${buyCar.id}" class="bId">
+                        <input type="hidden" th:value="${buyCar.count}" id="count2">
+                        <input class="count" type="text" style="width: 28px;height:20px;border-radius: 5px;border: 1px solid #c9c9c9;margin-right: 30px;" th:value="${buyCar.count}">
+                        <button class="layui-icon layui-icon-delete delete" style="background-color: #00ACEE;border: 0;color: white;border-radius: 3px;"></button>
+                        <span class="price" style="float: right;font-size: 16px">小计：¥[[${buyCar.price}/100*${buyCar.count}]]</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <input type="hidden" th:value="${client.balance}" id="balance">
+        <div class="footer">
+            <div class="left">
+                <span>总价:</span><span id="sum">¥[[${sum}/100]]</span>
+            </div>
+            <div class="right">
+                <button class="layui-btn layui-btn-normal" id="order">下 单</button>
+            </div>
+        </div>
+        <!--<p th:each="house:${houseCode}">
+            <span th:text="${house}"></span>
+        </p>-->
+    <!--</form>-->
+    <script th:src="@{/js/web_page/websocket.js}"></script>
+    <script>
+        layui.use(['layer','form'],function () {
+            var $ = layui.jquery,
+                layer = layui.layer,
+                form = layui.form;
+            $(".count").on('input',function () {
+                var count = $(this).val();//要修改的数量
+                var count2 = $("#count2").val();//原来的数量
+                var reg = /^[1-9]\d*$/;
+                if (!reg.test(count)){
+                    layer.alert("请输入正整数");
+                    $(this).val(count2);//如果输入的不是正整数,让原来的价格覆盖
+                }else{
+                    $("#count2").val($(this).val());//如果输入正确,直接覆盖
+                    var price2 = $(this).siblings("span").text();//获取小计的text
+                    var price = price2.substring(4);//使用substring得到小计数字
+                    var uPrice2 = $(this).parent("div").siblings("div").find("li:eq(1)").text();//商品单价text
+                    var uPrice = uPrice2.substring(4);//使用substring得到商品单价数字
+                    $(this).siblings("span").text("小计：¥"+uPrice * count)//将更改后的小计覆盖原来的
+                    var xPrice = $(".price").text();//获取所有小计
+                    var arr = xPrice.split('小');//使用split分割成数组
+                    var sum = 0;
+                    for(var i = 0;i<arr.length;i++){
+                        sum = sum+Number(arr[i].substring(3));//得到所有小计数字后相加得到总价
+                    }
+                    $("#sum").text("¥"+sum);//将总价覆盖之前的
+                }
+            })
+            $(".delete").click(function () {
+                var bId = $(this).siblings("input:eq(0)").val();
+                var url = "deleteBuyCar?id="+bId
+                $.getJSON(url,function (data) {
+                    if (data.result == "success"){
+                        var uls = $(".content");
+                        if (uls.length == 1){
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        }else{
+                            window.location.reload();
+                        }
+                    }
+                })
+            })
+            $("#order").click(function () {
+                var sum = $("#sum").text().substring(1);
+                var houseCode = $("select[name = 'modules']").val();
+                if (houseCode <= 0){
+                    layer.confirm('请选择送餐房间！',{
+                        icon:5
+                        ,anim:6
+                        ,btn:['确定']
+                        ,title:'错误提示'
+                        ,shade:0
+                    });
+                    return;
+                }
+                var balance = $("#balance").val();//账户余额
+                if (sum*100 > balance){
+                    layer.confirm('您的余额不足！',{
+                        title: '错误提示'
+                        ,icon:5
+                        ,anim:6
+                        ,btn:['充值余额']
+                    },function () {
+                        //触发充值余额
+                        layer.closeAll();
+                        layer.open({
+                            type: 2,
+                            title: '账户余额充值',
+                            shadeClose: true,
+                            shade: 0.5,
+                            maxmin: false,
+                            area: ['400px', '300px'],
+                            content: 'member/skipRechargeMoney'
+                        });
+                    });
+                }else{
+                    var url = "orderBuyCar?sum="+sum;
+                    var orderId = 0;
+                    $.getJSON(url,function (data) {
+                        if (data.result == "success"){
+                            orderId = data.orderId;
+                            setBuyCar(orderId,houseCode);
+                        }
+                    })
+                }
+
+            })
+            function setBuyCar(orderId,houseCode) {
+                var contents = $(".content>li");
+                var arry = new Array(contents.length);
+                for (var i = 0;i < arry.length;i++){
+                    var li = $(contents[i]);
+                    var proObject = new Object();
+                    proObject.productId = li.find("input[name = 'proId']").val();
+                    proObject.proType = li.find("input[name = 'proType']").val();
+                    proObject.count = li.find(".count").val();
+                    proObject.money = li.find("input[name = 'price']").val()*proObject.count;
+                    proObject.houseCode = houseCode;
+                    proObject.orderId=orderId;
+                    arry[i] = proObject;
+                }
+                var stringData = JSON.stringify(arry);
+                $.ajax({
+                    url: "orderProduct",
+                    type: "POST",
+                    async: false,
+                    contentType : 'application/json;charset=utf-8', //设置请求头信息
+                    data: stringData,
+                    success: function(data){
+                        if (data.result == "success"){
+                            layer.confirm("下单成功!",{
+                                btn:['确定']
+                                , icon:6
+                            },function () {
+                                send("您有一条新的餐品订单,请及时查收!");
+                                window.parent.location.reload();
+                            });
+                        }
+                    },
+                    error: function(res){
+                        alert(res.responseText);
+                    }
+                })
+            }
+        })
+    </script>
+</body>
+</html>

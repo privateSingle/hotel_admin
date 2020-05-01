@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.li.mapper.BuyCarMapper">
+
+    <resultMap id="BuyCarMap" type="cn.li.pojo.BuyCar">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="price" property="price"/>
+        <result column="count" property="count"/>
+        <result column="pro_id" property="proId"/>
+        <result column="pro_type" property="proType"/>
+        <result column="client_Id" property="clientId"/>
+    </resultMap>
+
+    <select id="findAllBuyCar" resultMap="BuyCarMap">
+        select * from buy_car
+        where client_Id = #{clientId,jdbcType=INTEGER}
+    </select>
+    <insert id="addBuyCar">
+        insert into
+        buy_car (name,price,pro_id, pro_type,client_Id)
+        VALUES (#{name,jdbcType=VARCHAR},#{price,jdbcType=INTEGER},#{proId,jdbcType=INTEGER},#{proType,jdbcType=INTEGER},#{clientId,jdbcType=INTEGER})
+    </insert>
+    <select id="findBuyCar" resultMap="BuyCarMap">
+        select * from buy_car
+        where pro_id = #{proId,jdbcType=INTEGER} and pro_type = #{type,jdbcType=INTEGER} and client_Id = #{clientId,jdbcType=INTEGER}
+    </select>
+    <update id="updateBuyCar">
+        update buy_car
+        set count = #{count,jdbcType=INTEGER}
+        where pro_id = #{proId,jdbcType=INTEGER} and pro_type = #{proType,jdbcType=INTEGER} and client_Id = #{clientId,jdbcType=INTEGER}
+    </update>
+    <delete id="deleteBuyCarById">
+        delete from buy_car
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <select id="findHouseCodeBuyClientId" resultType="java.lang.String">
+        select house_code from order_house_detail
+        where order_id IN (SELECT id FROM `order` WHERE client_Id = #{clientId,jdbcType=INTEGER} AND order_status = 3)
+    </select>
+    <delete id="deleteBuyCarByClientId">
+        delete from buy_car
+        where client_Id = #{clientId,jdbcType=INTEGER}
+    </delete>
+</mapper>

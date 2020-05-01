@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>修改</title>
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}">
+    <!--引入外部图标库-->
+    <link rel="stylesheet" th:href="@{/lib/layui/myicons/iconfont.css}">
+    <script th:src="@{/lib/layui/layui.js}"></script>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <style>
+        .layui-form-pane .layui-form-text .layui-textarea {
+            min-height: 80px;
+            max-height: 80px;
+        }
+        .div_show{
+            transform: translate(-2000px);
+            transition: all 0.8s;
+        }
+        .div_hide{
+            transform: translate(2000px);
+            transition: all 1.5s;
+        }
+        .photo-viewer{
+            margin: 50px 0;
+            text-align: center;
+        }
+        .img-reveal{
+            display: inline-block;
+            margin: 0px 13px;
+        }
+        .form-info{
+            margin: 15px;
+            position: relative;
+            overflow: hidden
+        }
+        /*@media screen and (-webkit-min-device-pixel-ratio:0) {*/
+            /*.form-info{*/
+                /*margin: 12px;*/
+            /*}*/
+        /*}*/
+        @media screen and (max-width: 1685px) {
+            .form-info{
+                margin: 12px;
+            }
+            .layui-layer-iframe{
+                width: 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- --------------------------------------------------------修改Client Start----------------------------------------------------------- -->
+<!--该隐藏字段为了标识本次修改的内容是什么-->
+<input type="hidden" id="edit-type" th:value="${operationType}">
+<!--表单-->
+<form class="layui-form layui-form-pane form-info" edit-url="updateClientInfo" id="editForm" action="" th:if="${operationType == 'client'}">
+
+    <div id="pet_info" style="width:100%">
+        <div class="layui-form-item">
+            <div class="layui-form-item">
+                <label class="layui-form-label">客户姓名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="name" lay-verify="required" placeholder="请输入用户姓名" th:value="${clientInfo.name}" autocomplete="off"
+                           class="layui-input">
+                </div>
+
+                <label class="layui-form-label">手机号</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="phone" th:value="${clientInfo.phone}" placeholder="请输入用户手机号"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">身份证号</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="idCard" th:value="${clientInfo.idCard}" autocomplete="off"
+                           class="layui-input">
+                </div>
+
+                <label class="layui-form-label">邮箱号</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="email" th:value="${clientInfo.email}" placeholder="请输入用户邮箱"
+                           autocomplete="off" class="layui-input">
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">客户年龄</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="age" lay-verify="required" th:value="${clientInfo.age}" placeholder="请输入用户年龄" autocomplete="off"
+                           class="layui-input">
+                </div>
+
+                <label class="layui-form-label">客户性别</label>
+                <div class="layui-input-inline">
+                    <span>
+                        <input type="radio" name="sex" value="男" title="男" th:checked="${clientInfo.sex=='男'}?'true':'false'">
+                        <input type="radio" name="sex" value="女" title="女" th:checked="${clientInfo.sex=='女'}?'true':'false'">
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-input" style="text-align: center">
+        <input type="button" class="layui-btn layui-btn-normal" value="修改" id="editBtnSave">
+        <input type="button" class="layui-btn layui-btn-normal" value="返回">
+    </div>
+    <!--其他不可修改信息-->
+    <input type="hidden" name="id" th:value="${clientInfo.id}">
+    <input type="hidden" name="score" th:value="${clientInfo.score}">
+    <input type="hidden" name="isVip" th:value="${clientInfo.isVip}">
+    <input type="hidden" name="remark" th:value="${clientInfo.remark}">
+    <input type="hidden" name="password" th:value="${clientInfo.password}">
+</form>
+<!-- -------------------------------------------------------修改Client END-------------------------------------------------------------- -->
+
+
+<!-- -------------------------------------------------------修改Employee Start-------------------------------------------------------------- -->
+<form class="layui-form layui-form-pane form-info" edit-url="editEmployeeInfo" id="editForm" action="" th:if="${operationType == 'employee'}">
+
+    <div id="pet_info" style="width:100%">
+        <div class="layui-form-item">
+            <div class="layui-form-item">
+                <label class="layui-form-label">客户姓名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="name" lay-verify="required" placeholder="请输入用户姓名" th:value="${employeeInfo.name}" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">登录名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="loginName" th:value="${employeeInfo.loginName}" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="password" lay-verify="required" th:value="${employeeInfo.password}" placeholder="请输入用户年龄" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-input" style="text-align: center">
+        <input type="button" class="layui-btn layui-btn-normal" value="修改" id="editBtnSave">
+        <input type="button" class="layui-btn layui-btn-normal" value="返回">
+    </div>
+    <!--其他不可修改信息-->
+    <input type="hidden" name="id" th:value="${employeeInfo.id}">
+    <input type="hidden" name="powerId" th:value="${employeeInfo.powerId}">
+</form>
+<!-- -------------------------------------------------------修改Employee END-------------------------------------------------------------- -->
+
+<script>
+    layui.use(['form','upload'], function () {
+        var $ = layui.jquery
+            , layer = layui.layer
+            , form = layui.form;
+
+        //回车键关闭弹窗
+        var flagMsg = true;
+        //声明一个变量防止表单重复提交
+        var lock = true;
+
+        /**
+         * 绑定回车事件
+         */
+        $(document).keypress(function (e) {
+            if(((e.keyCode || e.which)==13) && flagMsg==true) {
+                if(lock) {
+                    editInfo();
+                }
+            }else{
+                //如果当前有类似layer.alert的窗体，点击最上层的确定按钮，并且取消所有焦点
+                if($('.layui-layer-btn0').length > 0){
+                    $('.layui-layer-btn0').eq($('.layui-layer-btn0').length - 1)[0].click();
+                    $("*").blur();
+                }
+            }
+        });
+
+        /**
+         * 单击提交事件
+         */
+        $("#editBtnSave").click(function () {
+            if(lock) {
+                editInfo();
+            }
+        });
+
+        /**
+         * 修改请求
+         */
+        function editInfo(){
+            //修改控制关闭弹窗的标记
+            flagMsg = false;
+            //修改锁标记
+            lock = false;
+            //获取表单数据
+            var editData = $("#editForm").serialize();
+            var type = $("#edit-type").val();
+            //判断是否为空
+            var flag = verifyData(type);
+            //获取提交的url
+            var url = $("#editForm").attr("edit-url");
+            //ajax提交
+            if(flag.trim().length == 0) {
+                $.getJSON(
+                    url,
+                    editData,
+                    function (rollData) {
+                        if (rollData.result == "success") {
+                            layer.confirm(rollData.msg,{
+                                btn:['确定']  //按钮
+                                , skin: 'layui-layer-lan'
+                                , icon: 6
+                            },function () {
+                                window.parent.location.reload();    //刷新父页面
+                            });
+                        } else {
+                            layer.confirm(rollData.msg,{
+                                btn:['确定']  //按钮
+                                , skin: 'layui-layer-lan'
+                                , icon: 5
+                                , anim: 6
+                            },function () {
+                                //如果失败，将锁标记和回车键判断标记全部重置
+                                lock = true;
+                                flagMsg = true;
+                            });
+                        }
+                    }
+                )
+            } else {
+                layer.open({
+                    title: '错误消息'
+                    , content: flag
+                    , skin: 'layui-layer-lan'
+                    , shade: 0
+                    , icon: 5
+                    , anim: 6
+                    , closeBtn: 0
+                })
+            }
+        }
+
+        /**
+         * 积分不可修改
+         */
+        $("#isReadonly").bind('click', function () {
+            layer.tips('非会员用户不可修改积分哦！', '#isReadonly', {
+                tips: [2, '#0Af'],
+                time: 2000
+            });
+        });
+
+        /**
+         * 绑定是否是会员单选按钮的单击事件
+         */
+        form.on('radio(isVip)', function(data){
+            var selectValue = data.value;
+            if(selectValue == 0){
+                $("input[name='score']").attr("id","isReadonly");
+                $("input[name='score']").val("");
+            } else {
+
+            }
+        });
+
+        /**
+         * 验证是否为空
+         * @param type
+         */
+        function verifyData(type){
+            var flag = "";
+            //判断是什么修改
+            if(type == "employee"){      //修改员工信息，调用验证员工信息的方法
+                flag = verifyEmployeeInfo();
+            }
+            return flag;
+        }
+
+        /**
+         * 验证宠物信息
+         */
+        function verifyEmployeeInfo(){
+            //获取表单
+            var form = $("#editForm");
+            //验证表单需要填写的字段
+            var name = form.find($("input[name = 'name']")).val();  //获取宠物姓名
+            var password = form.find($("input[name='password']")).val();      //获取年龄
+            var loginName = form.find($("input[name='loginName']")).val();   //获取类型ID
+            //验证是否为空
+            if(name.trim().length <= 0){
+                return "姓名不可为空！";
+            }else if(password.trim().length <= 0){
+                return "密码不可为空！";
+            }else if(loginName.trim().length <= 0){
+                return "登录名不可为空！";
+            }else if(password.trim().length <= 5){
+                return "密码不可小于6位！";
+            }else if(loginName.trim().length <= 3){
+                return "登录名不可小于3位！";
+            }
+            return "";
+        }
+
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.li.mapper.DishesMapper">
+  <resultMap id="BaseResultMap" type="cn.li.pojo.Dishes">
+    <!--@mbg.generated-->
+    <!--@Table dishes-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="price" jdbcType="INTEGER" property="price" />
+    <result column="picture" jdbcType="VARCHAR" property="picture" />
+  </resultMap>
+  <resultMap id="DiAndPrMap" type="cn.li.pojo.DiAndPr">
+    <id property="id" column="id"/>
+    <result column="name" property="name"/>
+    <result column="price" property="price"/>
+    <result column="picture" property="picture"/>
+    <result column="type" property="type"/>
+    <result column="count" property="count"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, `name`, price, picture
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from dishes
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from dishes
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.li.pojo.Dishes" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into dishes (`name`, price, picture
+      )
+    values (#{name,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER}, #{picture,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.li.pojo.Dishes" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into dishes
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="picture != null">
+        picture,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="picture != null">
+        #{picture,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.li.pojo.Dishes">
+    <!--@mbg.generated-->
+    update dishes
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="picture != null">
+        picture = #{picture,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.li.pojo.Dishes">
+    <!--@mbg.generated-->
+    update dishes
+    set `name` = #{name,jdbcType=VARCHAR},
+      price = #{price,jdbcType=INTEGER},
+      picture = #{picture,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="findAllDishesInfo" resultMap="BaseResultMap">
+    select * from dishes
+    <if test="name != null and name != ''">
+      where name LIKE concat('%',#{name,jdbcType=VARCHAR},'%')
+    </if>
+  </select>
+  <select id="findAllDishesCount" resultType="int">
+    select count(*) from dishes
+    <if test="name != null and name != ''">
+      where name LIKE concat('%',#{name,jdbcType=VARCHAR},'%')
+    </if>
+  </select>
+    <delete id="delDishesInfo">
+        delete from dishes
+        where id in (${Ids})
+    </delete>
+    <select id="findDishesInfoByIds" resultMap="BaseResultMap">
+        select  * from dishes
+        where id in (${Ids})
+    </select>
+  <select id="findAll" resultType="cn.li.pojo.DiAndPr">
+    select id id, name name,price price,picture picture,'0' as 'count','0' as 'type' from  dishes
+      <if test="name != null and name != ''">
+          where name LIKE concat('%',#{name,jdbcType=VARCHAR},'%')
+      </if>
+    union
+    select id id,name name ,price price,product_picture picture,count as count,'1' as 'type' from product
+      <if test="name != null and name != ''">
+          where name LIKE concat('%',#{name,jdbcType=VARCHAR},'%')
+      </if>
+  </select>
+
+</mapper>

@@ -1,0 +1,47 @@
+.content_div{
+    margin-top: 20px;
+}
+
+.content_head_div{
+    width: 90%;
+    height: 450px;
+    margin: 0 auto
+}
+
+.content_left_div{
+    width: 20%;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.content_center_div{
+    width: 79%;
+    height: 440px;
+    overflow: hidden;
+    background-color: #00FFFF;
+    display: inline-block;
+}
+
+.content_left_div_one{
+    width: 350px;
+    height:350px;
+}
+
+.content_left_div_two{
+    width: 350px;
+    height:80px;
+    margin-top: 10px;
+}
+
+.content_left_two_son{
+    width: 80px;
+    height: 80px;
+    display: inline-block;
+    border:3px solid #AAA;
+}
+
+.room_name{
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'Aladin', cursive;
+}

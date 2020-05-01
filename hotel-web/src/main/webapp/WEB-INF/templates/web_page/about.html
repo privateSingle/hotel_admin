@@ -1,0 +1,192 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Mr Hotels - 关于我们</title>
+<link th:href="@{/css/web_page/bootstrap.css}" rel="stylesheet" type="text/css" media="all">
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script th:src="@{/js/web_page/jquery-1.11.0.min.js}"></script>
+<!-- Custom Theme files -->
+<link th:href="@{/css/web_page/style.css}" rel="stylesheet" type="text/css" media="all"/>
+<!-- Custom Theme files -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!--Google Fonts-->
+<link href='http://fonts.googleapis.com/css?family=Hind:400,300' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Aladin' rel='stylesheet' type='text/css'>
+<!--google fonts-->
+<!-- animated-css -->
+		<link th:href="@{/css/web_page/animate.css}" rel="stylesheet" type="text/css" media="all">
+		<script th:src="@{/js/web_page/wow.min.js}"></script>
+		<script>
+		 new WOW().init();
+		</script>
+<!-- animated-css -->
+<script th:src="@{/js/web_page/bootstrap.min.js}"></script>
+</head>
+<body>
+<!--header start here-->
+<div th:replace="web_page/public_page.html::#header"></div>
+<!--header end here-->
+<!--about start here-->
+<div class="about">
+	<div class="container">
+		<div class="about-main">
+			<div class="about-top">
+				<h1>关于我们</h1>
+			</div>
+			<div class="about-bottom">
+				<div class="col-md-5 about-left wow bounceInLeft" data-wow-delay="0.3s">
+					<img th:src="@{/images/a1.jpg}" alt="" class="img-responsive">
+				</div>
+				<div class="col-md-7 about-right wow bounceInRight" data-wow-delay="0.3s">
+					<h4>MR HOTELS</h4>
+					<p>Mr Hotels是私人投入巨资新建的顶级休闲会所，集餐饮、娱乐、洗浴、茶坊、客房为一体，酒店座落于山西省运城市。 隐逸在城市和乡村的边缘，Mr Hotels独享着不可复制的天生静谧与悠然。 一步是都市，一步是田野，酒店将竭力打造成为高档的、阳光的、尊贵的顶级休闲度假会所.</p>
+				    <div class="about-list">
+					  	<div class="about-img">
+					  		 <span class="abou-icon1"> </span>
+					  	</div>
+					  	<div class="about-text">
+					  		<h5>hotel小镇</h5>
+					  		<p>您不仅可以体验特色住宿空间,还可以享受到美食,娱乐,运动,特色超市等综合服务</p>
+					  	</div>
+					  	 <div class="clearfix"> </div>
+				   </div>
+				   <div class="about-list">
+					  	<div class="about-img">
+					  		 <span class="abou-icon2"> </span>
+					  	</div>
+					  	<div class="about-text">
+					  	   <h5>hotel小镇</h5>
+					  		<p>让我们一起"去乡野,享自然"</p>
+					  	</div>
+					  	 <div class="clearfix"> </div>
+				   </div>
+				</div>
+			  <div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--about end here-->
+<!--about advantages start here-->
+<div class="advantages">
+	<div class="container">
+		<div class="advantages-main">
+			<div class="advantages-top">
+				<h2>Mr Hotels 的优势</h2>
+			</div>
+		   <div class="advantage-bottom">
+			 <div class="col-md-4 advantage-grid wow bounceInLeft" data-wow-delay="0.3s">
+			 	<div class="advantage-block">
+			 		<h3>01</h3>
+			 		<h4>Eveniet voluptates</h4>
+			 		<p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates.</p>
+			 	</div>
+			 </div>
+			 <div class="col-md-4 advantage-grid wow zoomIn" data-wow-delay="0.3s">
+			 	<div class="advantage-block">
+			 		<h3>02</h3>
+			 		<h4>Voluptates repudiandae</h4>
+			 		<p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates.</p>
+			 	</div>
+			 </div>
+			 <div class="col-md-4 advantage-grid wow bounceInRight" data-wow-delay="0.3s">
+			 	<div class="advantage-block">
+			 		<h3>03</h3>
+			 		<h4>Molestiae recusandae</h4>
+			 		<p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates.</p>
+			 	</div>
+			 </div>
+			<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--about advantages end here-->
+<!-- team start here-->
+<div class="team">
+	<div class="container">
+	   <div class="team-main">
+	   	   <div class="team-top">
+	   	   	  <h3>Mr Hotels 的厨师</h3>
+	   	   </div>
+		   <div class="team-bottom wow fadeInRight" data-wow-delay="0.3s">
+			  <div class="col-md-3 team-grids">
+			    <!-- normal -->
+			    <div class="ih-item circle effect5">
+			        <div class="img"><img th:src="@{/images/t1.jpg}" alt="img" class="img-responsive"></div>
+			        <div class="info">
+			          <div class="info-back">
+			            <h3>Malorum</h3>
+			          </div>
+			        </div></div>
+			        <div class="team-bottom">
+			        	  <p>On the other hand, we denounce with righteous indignation.</p>
+			        </div>
+
+			    <!-- end normal -->
+			   </div>
+			  <div class="col-md-3 team-grids">
+			   <!-- normal -->
+			    <div class="ih-item circle effect5">
+			        <div class="img"><img th:src="@{/images/t2.jpg}" alt="img" class="img-responsive"></div>
+			        <div class="info">
+			          <div class="info-back">
+			            <h3>Bonorum</h3>
+			          </div>
+			        </div></div>
+			        <div class="team-bottom">
+			        	  <p>On the other hand, we denounce with righteous indignation.</p>
+			        </div>
+			    <!-- end normal -->
+			  </div>
+			  <div class="col-md-3 team-grids">
+			    <!-- normal -->
+			    <div class="ih-item circle effect5">
+			        <div class="img"><img th:src="@{/images/t3.jpg}" alt="img" class="img-responsive"></div>
+			        <div class="info">
+			          <div class="info-back">
+			            <h3>Finibus</h3>
+			          </div>
+			        </div></div>
+			        <div class="team-bottom">
+			        	  <p>On the other hand, we denounce with righteous indignation.</p>
+			        </div>
+			    <!-- end normal -->
+			  </div>
+			   <div class="col-md-3 team-grids">
+			    <!-- normal -->
+			    <div class="ih-item circle effect5">
+			        <div class="img"><img th:src="@{/images/t4.jpg}" alt="img" class="img-responsive"></div>
+			        <div class="info">
+			          <div class="info-back">
+			            <h3>Rackham</h3>		           
+			          </div>
+			        </div></div>
+			        <div class="team-bottom">
+			        	  <p>On the other hand, we denounce with righteous indignation.</p>
+			        </div>
+			    <!-- end normal -->			 
+			  </div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--team end here-->
+
+<!--首页 grid end here-->
+<!--footer start here-->
+<div th:replace="web_page/public_page.html::#footer"></div>
+<!--footer end here-->
+<!--copy rights start here-->
+<div class="copy-right">
+	<div class="container">
+		<div class="copy-rights-main wow zoomIn" data-wow-delay="0.3s">
+			<p>Copyright &copy; 2020.Company name All rights reserved.More </p>
+		</div>
+	</div>
+</div>
+</body>
+</html>

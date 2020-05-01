@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Mr Hotels - 房间列表</title>
+    <link th:href="@{/css/web_page/bootstrap.css}" rel="stylesheet" type="text/css" media="all">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script th:src="@{/js/web_page/jquery-1.11.0.min.js}"></script>
+    <!-- Custom Theme files -->
+    <link th:href="@{/css/web_page/style.css}" rel="stylesheet" type="text/css" media="all"/>
+    <!-- Custom Theme files -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="keywords" content=""/>
+    <script type="application/x-javascript"> addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    } </script>
+    <!--Google Fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Hind:400,300' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Aladin' rel='stylesheet' type='text/css'>
+    <!--google fonts-->
+    <!-- animated-css -->
+    <link th:href="@{/css/web_page/animate.css}" rel="stylesheet" type="text/css" media="all">
+    <script th:src="@{/js/web_page/wow.min.js}"></script>
+    <script>
+        new WOW().init();
+    </script>
+    <!-- animated-css -->
+    <script th:src="@{/js/web_page/bootstrap.min.js}"></script>
+    <script th:src="@{/lib/layui/layui.js}"></script>
+</head>
+<body>
+<!--header start here-->
+<div th:replace="web_page/public_page.html::#header"></div>
+<!--header end here-->
+<!--room start here-->
+<div class="rooms">
+    <div class="container">
+        <div class="rooms-main">
+            <div class="room-head">
+                <h3 style="font-weight: bold">豪华客房</h3>
+            </div>
+            <div class="rooms-top">
+                <div class="rooms-left wow slideInLeft" data-wow-delay="0.3s">
+                    <div class="col-md-4 rooms-text">
+                        <h2><a th:href="@{'single?id='+${houseTypes.get(0).id}}" th:text="${houseTypes.get(0).typeName}"></a></h2>
+                        <p>
+                            客房介绍：<span th:text="${houseTypes.get(0).remark}"></span>
+                        </p>
+                        <p>
+                            客房价格：
+                            <span style="font-size: 20px;font-weight:bold;color: red">¥</span>
+                            <span style="font-size: 20px;font-weight:bold;color: red" th:text="${houseTypes.get(0).price/100}">200</span>
+                        </p>
+                        <div class="room-btn">
+                            <a th:href="@{'single?id='+${houseTypes.get(0).id}}" class="hvr-push">房间预定</a>
+                        </div>
+                    </div>
+                    <div class="col-md-8 rooms-img">
+                        <div class="luxury-block">
+                            <a th:href="@{'single?id='+${houseTypes.get(0).id}}"> <img src="images/r1.jpg" alt="" class="img-responsive"></a>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="rooms-left1 wow slideInRight" data-wow-delay="0.3s">
+                    <div class="col-md-8 rooms-img ulta-img">
+                        <a th:href="@{'single?id='+${houseTypes.get(1).id}}"> <img src="images/r2.jpg" alt="" class="img-responsive"></a>
+                    </div>
+                    <div class="col-md-4 rooms-text ulta-text">
+                        <h3><a th:href="@{'single?id='+${houseTypes.get(1).id}}" th:text="${houseTypes.get(1).typeName}">豪华间</a></h3>
+                        <p>
+                            客房介绍：<span th:text="${houseTypes.get(1).remark}"></span>
+                        </p>
+                        <p>
+                            客房价格：
+                            <span style="font-size: 20px;font-weight:bold;color: red">¥</span>
+                            <span style="font-size: 20px;font-weight:bold;color: red" th:text="${houseTypes.get(1).price/100}">200</span>
+                        </p>
+                        <div class="room-btn">
+                            <a th:href="@{'single?id='+${houseTypes.get(1).id}}">房间预定</a>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<!--gallery start here-->
+<div class="gallery" id="gallery">
+    <div class="container">
+        <div class="gallery-main wow zoomIn" data-wow-delay="0.3s">
+            <div class="gallery-top">
+                <h1 style="font-weight: bold;">更多房间</h1>
+            </div>
+            <div class="gallery-bott">
+                <div class="col-md-4 col1" th:each="houseType:${houseTypes}" style="margin-bottom: 30px">
+                    <a th:href="@{'single?id='+${houseType.id}}" rel="title" class="b-link-stripe b-animate-go  thickbox">
+
+                        <figure class="effect-bubba" style="height: 210px;width: 350px">
+                            <img class="img-responsive" th:src="${application.showHousePath+houseType.houseImg}">
+                            <figcaption>
+                                <h4 class="gal" th:text="${houseType.typeName}"></h4>
+                                <p class="gal1" th:text="${houseType.remark}"></p>
+                            </figcaption>
+                        </figure>
+                    </a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--gallery end here-->
+<script th:src="@{/js/jquery.chocolat.js}"></script>
+<link rel="stylesheet" th:href="@{/css/chocolat.css}" type="text/css" media="screen" charset="utf-8">
+<!--light-box-files -->
+<script type="text/javascript" charset="utf-8">
+    $(function () {
+        $('. a').Chocolat();
+    });
+</script>
+
+<!--room end here-->
+
+<!--首页 grid end here-->
+
+<!--footer start here-->
+<div th:replace="web_page/public_page.html::#footer"></div>
+<!--footer end here-->
+
+<!--copy rights start here-->
+<div class="copy-right">
+    <div class="container">
+        <div class="copy-rights-main wow zoomIn" data-wow-delay="0.3s">
+            <p>Copyright &copy; 2020.Company name All rights reserved.More </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

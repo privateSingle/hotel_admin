@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>客房类型</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}">
+    <!--引入外部图标库-->
+    <link rel="stylesheet" th:href="@{/lib/layui/myicons/iconfont.css}">
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <style>
+        .content-input {
+            width: 12%;
+            min-width: 170px;
+            display: inline-block;
+        }
+
+        .content-input-01,.content-input-02,.content-input-03,.content-input-04 {
+            width: 20%;
+            min-width: 330px;
+        }
+
+        @media screen and (-webkit-min-device-pixel-ratio: 0) {
+            .content-input-01,.content-input-02,.content-input-03,.content-input-04 {
+                width: 21%;
+                min-width: 340px;
+            }
+        }
+
+        @media screen and (max-width: 1560px) {
+            .content-button{
+                margin-top: 10px;
+            }
+        }
+
+        @media screen and (max-width: 900px) {
+            .content-button,.content-input-03,.content-input-04{
+                margin-top: 10px;
+            }
+        }
+
+        @media screen and (max-width: 700px) {
+            .content-input-02,.content-button,.content-input-03,.content-input-04{
+                margin-top: 10px;
+            }
+            .content-button{
+                display: block;
+            }
+            .layui-laypage button {
+                margin-left:2px;
+                padding:0 5px;
+                cursor:pointer
+            }
+            .layui-laypage input {
+                width:35px;
+                margin:0 2px;
+                padding:0 3px;
+                text-align:center
+            }
+            .layui-laypage .layui-laypage-skip {
+                margin-left:5px;
+                margin-right:10px;
+                padding:0;
+                border:none
+            }
+            .layui-laypage .layui-laypage-refresh {
+                margin-left:10px;
+                margin-right:0px;
+                padding:0;
+                border:none;
+                vertical-align: middle;
+            }
+            .layui-laypage .layui-laypage-count {
+                margin-left:10px;
+                margin-right:3px;
+                padding:0;
+                border:none
+            }
+            .layui-laypage a,
+            .layui-laypage span {
+                display:inline-block;
+                *display:inline;
+                *zoom:1;
+                vertical-align:middle;
+                padding:0 10px;
+                height:24px;
+                line-height:24px;
+                margin:0 -1px 5px 0;
+                background-color:#fff;
+                color:#333;
+                font-size:12px
+            }
+        }
+
+        .layui-form-checkbox[lay-skin="primary"] {
+            padding-left: 22px;
+        }
+
+        .layui-layer-my-molv .layui-layer-btn a {
+            background: #009f95;
+            border-color: #009f95
+        }
+
+        .layui-layer-my-molv .layui-layer-btn .layui-layer-btn1 {
+            background: #FFF
+        }
+    </style>
+</head>
+<body>
+<div style="padding: 0 10px">
+    <table class="layui-hide" id="listInfo" lay-filter="listInfo"></table>
+
+    <script type="text/html" id="toolbar">
+        <div class="layui-btn-container layui-btn-group">
+            <input type="button" class="layui-btn layui-icon layui-btn-primary option-btn" id="addInfo" lay-event="add" value="&#xe61f;&nbsp;新增">
+            <input type="button" class="layui-btn layui-icon layui-btn-primary option-btn" id="updateInfo" lay-event="edit" value="&#xe642;&nbsp;修改">
+            <input type="button" class="layui-btn layui-icon layui-btn-primary option-btn" id="deleteInfo" lay-event="del" value="&#xe640;&nbsp;删除">
+        </div>
+    </script>
+
+</div>
+
+<script th:src="@{/lib/layui/layui.js}"></script>
+<script src="../../../js/clickMenthod.js" th:src="@{/js/clickMenthod.js}"></script>
+
+<script>
+    layui.use(['table','form'], function(){
+        var table = layui.table
+            ,form = layui.form
+            ,layer = layui.layer;
+
+        var tableIns = $("#listInfo");
+
+        reloadMethod('getHouseType');
+
+        /**
+         * 初始化加载方法
+         */
+        function reloadMethod(urlData) {
+            tableIns = table.render({
+                elem: '#listInfo'
+                , url: urlData
+                , toolbar: '#toolbar' //开启头部工具栏，并为其绑定左侧模板
+                , limit: 20
+                , height: 'full-78'
+                , defaultToolbar: ['filter', 'exports', 'print']
+                , title: '客房数据表'
+                , cols: [
+                    [
+                        {type: 'checkbox', fixed: 'left'}
+                        , {field: 'id',title: '类型编号', fixed: 'left', unresize: true, sort: true,templet:'<div>{{d.id}}</div>'}
+                        , {field: 'type_name', title: '客房类型',templet:'<div>{{d.typeName}}</div>'}
+                        , {field: 'price', title: '房价', sort: true,templet:'<div>￥{{d.price/100}}</div>'}
+                        , {field: 'count', title: '客房总数', sort: true,templet:'<div>{{d.count}}</div>'}
+                        , {field: 'remain', title: '客房剩余数', sort: true,templet:'<div>{{d.remain}}</div>'}
+                        , {field: 'remark', title: '客房描述', sort: true,templet:'<div>{{d.remark}}</div>'}
+                    ]
+                ]
+                , page: { //支持传入 laypage 组件的所有参数
+                    layout: ['count','limit','prev', 'page', 'next', 'skip','refresh'] //自定义分页布局
+                    //,curr: 5 //设定初始在第 5 页
+                    ,groups: 5 //只显示 5 个连续页码
+                    , theme:'#08F'
+                    , first: '首页' //显示首页
+                    , last: '尾页' //显示尾页
+                }
+            });
+        }
+
+        /**
+         *  点击查询按钮后重新加载表格
+         */
+        $("#searchBtn").click(function () {
+            var datas = $("#searchFrom").serialize();
+            var url = 'getHouseList?'+datas;
+            reloadMethod(url);
+        });
+        //头工具栏事件
+        table.on('tool(listInfo)', function(obj){
+            var houseTypeId = JSON.stringify(obj.data.houseTypeId);
+        });
+
+        //头工具栏事件
+        table.on('toolbar(listInfo)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            var data = checkStatus.data;
+            var selectCount = data.length;      //获取选中行
+            var dataId = getIds(data);          //data是选中的所有数据，得到的是一个数组，将这个数组传入getIds方法进行处理
+            switch(obj.event){
+                case 'find':
+                    searchInfo(selectCount, dataId);
+                    break;
+                case 'edit':
+                    updateInfo(selectCount, dataId,"houseType");
+                    break;
+                case 'add':
+                    addInfo("houseType");
+                    break;
+                //自定义头工具栏右侧图标 - 提示
+                case 'del':
+                    var a = true;
+                   $.each(data,function () {
+                        var d = $(this).get(0);
+                        if (d.count>0){
+                            alert("请先删除该类型的所有客房");
+                            a=false;
+                            return false;
+                        }
+                    });
+                    if (a==true){
+                        deleteInfo(selectCount,dataId,"delHouseType?id="+dataId, obj);
+                    }
+                    break;
+            }
+        });
+
+
+
+    });
+</script>
+</body>
+</html>

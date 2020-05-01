@@ -1,0 +1,281 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Mr Hotels - 房间详情</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/global.css}"/>
+    <link rel="stylesheet" th:href="@{/css/smoothness/jquery.ui.css}" type="text/css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/css.css}"/>
+
+
+    <link th:href="@{/css/web_page/bootstrap.css}" rel="stylesheet" type="text/css" media="all">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script th:src="@{/js/web_page/jquery-1.11.0.min.js}"></script>
+    <!-- Custom Theme files -->
+    <link th:href="@{/css/web_page/style.css}" rel="stylesheet" type="text/css" media="all"/>
+    <!-- Custom Theme files -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="keywords" content=""/>
+    <script type="application/x-javascript"> addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    } </script>
+    <!--Google Fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Hind:400,300' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Aladin' rel='stylesheet' type='text/css'>
+    <!--google fonts-->
+    <!-- animated-css -->
+    <link th:href="@{/css/web_page/animate.css}" rel="stylesheet" type="text/css" media="all">
+    <script th:src="@{/js/web_page/wow.min.js}"></script>
+    <script>
+        new WOW().init();
+    </script>
+    <!-- animated-css -->
+    <script th:src="@{/js/web_page/bootstrap.min.js}"></script>
+</head>
+<body>
+
+<!--header start here-->
+<div th:replace="web_page/public_page.html::#header"></div>
+<!--header end here-->
+
+<!--single start here-->
+<div class="single">
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">预定信息</h4>
+                </div>
+                <div class="modal-body">
+                    <table style="text-align: left;">
+                        <tr>
+                            <td style="width: 100px">入住时间: </td>
+                            <td id="shijian"> </td>
+                        </tr>
+                        <tr>
+                            <td  style="width: 100px">房间数量:</td>
+                            <td id="shulinag"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-header">
+                    <h4 class="modal-title">入住信息</h4>
+                </div>
+                <div class="modal-body">
+                    <table style="text-align: left;">
+                        <tr>
+                            <td style="width: 100px">入住人: </td>
+                            <td th:text="${session.clientUser.name}"></td>
+                        </tr>
+                        <tr>
+                            <td  style="width: 100px">邮箱号:</td>
+                            <td th:text="${session.clientUser.email}"></td>
+                        </tr>
+                        <tr>
+                            <td  style="width: 100px">会员积分:</td>
+                            <td th:text="${session.clientUser.isVip==0?'非会员':session.clientUser.score}"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+
+                    <div >
+                        <p>房费<span style="width: 100px;display: inline-block" id="money"></span></p>
+                        <p>折扣<span style="width: 100px;display: inline-block" id="zhekou"></span></p>
+                        <p>订单总价 <span><span id="zongjia" style="width: 80px;display: inline-block;color: #d9534f;font-size: 26px"></span>元</span></p>
+                    </div>
+                    <button type="button" class="btn btn-default" id="quxiao" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="orderBtn">提交订单</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="single-top wow bounceInLeft" data-wow-delay="0.3s">
+            <!--<img class="img-responsive wow fadeInUp animated" data-wow-delay=".5s" th:src="${application.showHousePath+houseType.houseImg}" alt=""/>-->
+            <div style="display: inline-block;position: relative;height: 364px;float: left">
+                <span style="position: absolute;bottom: 0">剩余房间数量：<span style="color: red" id="remain" th:text="${houseType.remain}"></span></span>
+                <img class="img-responsive wow fadeInUp animated" data-wow-delay=".5s" th:src="@{/images/r3.jpg}" alt=""  style="display: inline-block;"/>
+            </div>
+            <div class="lone-line" style="display: inline-block;vertical-align: top;margin-left: 50px;float: right">
+                <div class="stay-list-left">
+                    <span class="search-sign"></span>
+
+                    <h3 class="search-title">住宿预订</h3>
+                    <form>
+                        <input type="hidden" id="clientId" th:value="${session.clientUser.id}">
+                        <input type="hidden" id="houseTypeId" th:value="${houseType.id}">
+                        <input type="hidden" id="price" th:value="${houseType.price}">
+                        <input type="hidden" id="score" th:value="${session.clientUser.score}">
+                        <input type="hidden" id="clientPrice" th:value="${session.clientUser.balance}">
+                        <input type="hidden" id="isVip" th:value="${session.clientUser.isVip}">
+                        <div class="sea-div">
+                            <label class="search-lab">预定房间数</label><input type="text" placeholder="" class="hotel-name" id="reserverCount"/>
+                        </div>
+                        <div class="sea-div">
+                            <label class="search-lab">入住日期</label><input type="text" readonly  id="startDate"/>
+                        </div>
+                        <div class="sea-div">
+                            <label class="search-lab">退房日期</label><input type="text" readonly  id="endDate"/>
+                        </div>
+                        <input type="button" id="reserve" data-toggle="modal" data-target="#myModal" class="search-but" value="预  定"/>
+                    </form>
+                </div>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+        <div class="comment wow bounceInRight" data-wow-delay="0.3s">
+            <h3 style="font-weight: bold">评 价</h3>
+            <div class="media wow fadeInLeft animated" data-wow-delay=".5s" th:each="comment:${comments}" style="border: 1px solid #CCC;padding: 5px">
+                <div class="code-in">
+                    <p class="smith"><a href="#" th:text="${comment.clientName}"></a> <span th:text="${comment.date}"></span></p>
+                    <!--<p class="reply"><a href="#"><i class="glyphicon glyphicon-repeat"> </i>REPLY</a></p>-->
+                    <div class="clearfix"></div>
+                </div>
+                <div class="media-body">
+                    <span style="color: #6F6F8C;font-weight: bold;font-family: 'Microsoft YaHei', 微软雅黑">评价内容：</span><span th:text="${comment.content}" style="margin-top: 0;"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!---->
+<!--single end here-->
+
+<!--footer start here-->
+<div th:replace="web_page/public_page.html::#footer"></div>
+<!--footer end here-->
+
+<!--copy rights start here-->
+<div class="copy-right">
+    <div class="container">
+        <div class="copy-rights-main wow zoomIn" data-wow-delay="0.3s">
+            <p>Copyright &copy; 2020.Company name All rights reserved.More </p>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.ui.js}"></script>
+<script type="text/javascript" th:src="@{/js/moment.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/hotel/hotel.search.js}"></script>
+<script type="text/javascript" th:src="@{/js/stay.js}"></script>
+<script type="text/javascript" th:src="@{/lib/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/web_page/websocket.js}"></script>
+
+<script>
+    layui.use(['layer'],function () {
+        var layer = layui.layer, $ = layui.jquery;
+
+
+        $("#reserve").click(function () {
+            var monery = $("#price").val();//房间价格
+            var reserverCount = $("#reserverCount").val();//预定房间数
+            var startDate = $("#startDate").val();//起始时间
+            var endDate = $("#endDate").val();//结束时间
+            var clientId = $("#clientId").val();//客户id
+            var score = $('#score').val();//积分
+            var house = $("#remain").text();
+            var isVip = $("#isVip").val();  //是否会员
+
+
+
+            var date = new Date(endDate).getTime()-new Date(startDate).getTime();
+            var dayDiff = Math.floor(date / (24 * 3600 * 1000));//计算出相差天数
+            $('#shijian').text(startDate+'\xa0\xa0\xa0\xa0至\xa0\xa0\xa0\xa0'+endDate+'\xa0\xa0\xa0\xa0共'+dayDiff+'晚');
+            $('#shulinag').text('共'+reserverCount+'间');
+            $('#money').text((monery*dayDiff)*reserverCount/100+'元');
+            $('#zhekou').text(isVip==0?'非会员':score<1000?'无折扣':score<2000?'9折':score<3000?'8折':'7.5折');
+
+            var zk = $('#zhekou').text();
+            var ff = (monery*dayDiff)*reserverCount/100;
+            $('#zongjia').text(zk=='9折'?ff*0.9:zk=='8折'?ff*0.8:zk=='7.5折'?ff*0.75:ff);
+            if (Number(reserverCount)>Number(house)){
+                layer.open({
+                    title: '错误提示'
+                    ,content: '抱歉，该类型客房数量不足！'
+                    ,icon:5
+                    ,anim:6
+                });
+                $('#reserve').attr('data-target','');
+            }else if (reserverCount==""){
+                layer.open({
+                    title: '错误提示'
+                    ,content: '请输入预定房间数量！'
+                    ,icon:5
+                    ,anim:6
+                });
+                $('#reserve').attr('data-target','');
+            }else {
+                $('#reserve').attr('data-target','#myModal');
+            }
+        });
+
+        $('#orderBtn').click(function () {
+            var houseTypeId = $("#houseTypeId").val();//客房类型id
+            var reserverCount = $("#reserverCount").val();//预定房间数
+            var startDate = $("#startDate").val();//起始时间
+            var endDate = $("#endDate").val();//结束时间
+            var clientId = $("#clientId").val();//客户id
+            var clientPrice = $('#clientPrice').val();
+            var money = $('#zongjia').text()*100;//订单价格
+            if (Number(clientPrice)<Number(money)){
+                layer.confirm('您的余额不足！',{
+                    title: '错误提示'
+                    ,icon:5
+                    ,anim:6
+                    ,offset:'180px'
+                    ,btn:['充值余额']
+                },function () {
+                    //触发充值余额
+                    layer.closeAll();
+                    $('#quxiao').click();
+                    layer.open({
+                        type: 2,
+                        title: '账户余额充值',
+                        shadeClose: true,
+                        shade: 0.5,
+                        maxmin: false,
+                        area: ['400px', '300px'],
+                        content: 'member/skipRechargeMoney'
+                    });
+                });
+            } else {
+                $.get("reserver?houseTypeId="+houseTypeId+"&monery="+money+"&reserverCount=" +reserverCount+"&startDate="+startDate+"&endDate="+endDate+"&clientId="+clientId,
+                    function (data) {
+                        if (data.result="success"){
+                            //预定成功
+                            layer.confirm('房间预定成功！请您及时到店办理入住！',{
+                                title: '消息提示'
+                                ,icon:6
+                                ,offset:'180px'
+                                ,btn:['确定']
+                            },function () {
+                                //点击确定时调用WebSocket的发送方法向后台发送一条预定成功的消息
+                                send("有一条新的房间预定！请及时查看并处理！");
+                                layer.closeAll();
+                                window.parent.location.reload();
+                            });
+                        }else{
+                            layer.open({
+                                title: '错误提示'
+                                ,offset:'180px'
+                                ,icon:5
+                                ,anim:6
+                            });
+                        }
+                    })
+            }
+        })
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}">
+    <!--引入外部图标库-->
+    <link rel="stylesheet" th:href="@{/lib/layui/myicons/iconfont.css}">
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <style>
+        .content-input {
+            width: 12%;
+            min-width: 170px;
+            display: inline-block;
+        }
+
+        .content-input-01,.content-input-02,.content-input-03,.content-input-04 {
+            width: 20%;
+            min-width: 330px;
+        }
+
+        @media screen and (-webkit-min-device-pixel-ratio: 0) {
+            .content-input-01,.content-input-02,.content-input-03,.content-input-04 {
+                width: 21%;
+                min-width: 340px;
+            }
+        }
+
+        @media screen and (max-width: 1560px) {
+            .content-button{
+                margin-top: 10px;
+            }
+        }
+
+        @media screen and (max-width: 900px) {
+            .content-button,.content-input-03,.content-input-04{
+                margin-top: 10px;
+            }
+        }
+
+        @media screen and (max-width: 700px) {
+            .content-input-02,.content-button,.content-input-03,.content-input-04{
+                margin-top: 10px;
+            }
+            .content-button{
+                display: block;
+            }
+            .layui-laypage button {
+                 margin-left:2px;
+                 padding:0 5px;
+                 cursor:pointer
+            }
+            .layui-laypage input {
+                width:35px;
+                margin:0 2px;
+                padding:0 3px;
+                text-align:center
+            }
+            .layui-laypage .layui-laypage-skip {
+                margin-left:5px;
+                margin-right:10px;
+                padding:0;
+                border:none
+            }
+            .layui-laypage .layui-laypage-refresh {
+                margin-left:10px;
+                margin-right:0px;
+                padding:0;
+                border:none;
+                vertical-align: middle;
+            }
+            .layui-laypage .layui-laypage-count {
+                margin-left:10px;
+                margin-right:3px;
+                padding:0;
+                border:none
+            }
+            .layui-laypage a,
+            .layui-laypage span {
+                display:inline-block;
+                *display:inline;
+                *zoom:1;
+                vertical-align:middle;
+                padding:0 10px;
+                height:24px;
+                line-height:24px;
+                margin:0 -1px 5px 0;
+                background-color:#fff;
+                color:#333;
+                font-size:12px
+            }
+        }
+
+        .layui-form-checkbox[lay-skin="primary"] {
+            padding-left: 22px;
+        }
+
+        .layui-layer-my-molv .layui-layer-btn a {
+            background: #009f95;
+            border-color: #009f95
+        }
+
+        .layui-layer-my-molv .layui-layer-btn .layui-layer-btn1 {
+            background: #FFF
+        }
+    </style>
+</head>
+<body>
+<div>
+    <!--查询条件表单-->
+    <form class="layui-form layui-form-pane" id="searchFrom" action="" style="margin-bottom: 10px;" onsubmit="return false">
+
+        <div class="layui-row" style="margin-top: 10px">
+            <div class="content-input content-input-01">
+                <label class="layui-form-label">商品名</label>
+                <div class="layui-input-inline" style="margin-right: 30px;">
+                    <input type="text" name="name" lay-verify="required" placeholder="请输入商品" autocomplete="off"
+                           class="layui-input" style="width: 186px;">
+                </div>
+            </div>
+
+            <div class="content-input content-button">
+                <input type="button" class="layui-btn layui-btn-normal" id="searchBtn" value="查询" style="margin-right: 1%">
+                <input type="reset" class="layui-btn layui-btn-normal" value="清空">
+            </div>
+        </div>
+        <!--</div>-->
+    </form>
+    <table class="layui-hide" id="listInfo" lay-filter="listInfo"></table>
+
+    <script type="text/html" id="toolbar">
+        <div class="layui-btn-container layui-btn-group">
+            <input type="button" class="layui-btn layui-icon layui-btn-primary option-btn" id="addInfo" lay-event="add" value="&#xe61f;&nbsp;新增">
+            <input type="button" class="layui-btn layui-icon layui-btn-primary option-btn" id="updateInfo" lay-event="edit" value="&#xe642;&nbsp;修改">
+            <input type="button" class="layui-btn layui-icon layui-btn-primary option-btn" id="deleteInfo" lay-event="del" value="&#xe640;&nbsp;删除">
+        </div>
+    </script>
+
+</div>
+
+<script th:src="@{/lib/layui/layui.js}"></script>
+<script th:src="@{/js/clickMenthod.js}" src=""></script>
+
+<script>
+    layui.use(['table','form'], function(){
+        var table = layui.table
+            ,form = layui.form;
+
+        var tableIns = $("#listInfo");
+
+        reloadMethod('dishes/initData');
+
+
+        /**
+         * 初始化加载方法
+         */
+        function reloadMethod(urlData) {
+            tableIns = table.render({
+                elem: '#listInfo'
+                , url: urlData
+                , toolbar: '#toolbar' //开启头部工具栏，并为其绑定左侧模板
+                , limit: 20
+                , height: 'full-76'
+                , defaultToolbar: ['filter', 'exports', 'print']
+                , title: '用户数据表'
+                , cols: [
+                    [
+                        {type: 'checkbox', fixed: 'left'}
+                        , {field: 'id', title: '菜品编号', fixed: 'left', unresize: true, sort: true}
+                        , {field: 'name', title: '菜品名称'}
+                        , {field: 'price', title: '单价', sort: true,templet:'<div>{{d.price/100}}元</div>'}
+                    ]
+                ]
+                , initSort: {
+                    field:'id'
+                    ,type:'asc'
+                }
+                , page: { //支持传入 laypage 组件的所有参数
+                    theme:'#08F',
+                    layout: ['count','limit', 'prev', 'page', 'next', 'skip', 'refresh'] //自定义分页布局
+                    //,curr: 5 //设定初始在第 5 页
+                    ,groups: 5 //只显示 5 个连续页码
+                    , first: '首页' //显示首页
+                    , last: '尾页' //显示尾页
+                }
+            });
+        }
+
+        /**
+         *  点击查询按钮后重新加载表格
+         */
+        $("#searchBtn").click(function () {
+            var datas = $("#searchFrom").serialize();
+            //datas = decodeURIComponent(datas,true);
+            var url = 'dishes/initData?'+datas;
+            reloadMethod(url);
+        });
+
+        //头工具栏事件
+        table.on('toolbar(listInfo)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            var data = checkStatus.data;
+            var selectCount = data.length;      //获取选中行
+            var dataId = getIds(data);          //data是选中的所有数据，得到的是一个数组，将这个数组传入getIds方法进行处理
+            // alert(dataId)
+            switch(obj.event){
+                case 'edit':
+                    updateInfo(selectCount, dataId,"dishes");
+                    break;
+                case 'add':
+                    addInfo("dishes");
+                    break;
+                //自定义头工具栏右侧图标 - 提示
+                case 'del':
+                    deleteInfo(selectCount,dataId,"delDishesInfo?delIds="+dataId);
+                    break;
+            }
+        });
+
+    });
+</script>
+</body>
+</html>

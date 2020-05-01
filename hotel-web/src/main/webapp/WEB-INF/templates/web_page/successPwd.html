@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Mr Hotels - 修改成功</title>
+    <link type="text/css" rel="stylesheet" href="css/passwordStyle.css" th:href="@{/css/web_page/passwordStyle.css}"/>
+</head>
+<body>
+<!--Begin Header Begin-->
+<div class="live_wrap live_wrap01" style="position: absolute;left: 50%;top:50%;
+			transform: translate(-50%, -50%);">
+    <div class="fp-content">
+        <div class="fp-title">
+            <span>找回密码</span>
+        </div>
+        <div class="fp-item">
+            <div class="fp-item-step">
+                <ul class="fp-step-list">
+                    <li class="step on">
+                        <div class="line"></div>
+                        <div class="circle">1</div>
+                        <span>填写资料</span>
+                    </li>
+                    <li class="step on">
+                        <div class="line"></div>
+                        <div class="circle">2</div>
+                        <span>设置新密码</span>
+                    </li>
+                    <li class="step">
+                        <div class="line"></div>
+                        <div class="circle">√</div>
+                        <span>完成</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="fp-item-content content_two content_three">
+                <p style="font-size: 18px;margin-top: 28%;" class="msg_p">
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="btmbg" style="text-align: center;margin-top: 50px;">
+        <div class="btm">
+            <p style="margin:10px 0;font-size: 14px;">Copyright &copy; 2020.Author：Mr.Li, All rights reserved.More 仿冒/复制必究 </p>
+            <img src="images/b_1.gif" th:src="@{/images/info/b_1.gif}" width="98" height="33" /><img src="images/b_2.gif" th:src="@{/images/info/b_2.gif}" width="98" height="33" /><img src="images/b_3.gif" th:src="@{/images/info/b_3.gif}" width="98" height="33" /><img src="images/b_4.gif" th:src="@{/images/info/b_4.gif}" width="98" height="33" /><img src="images/b_5.gif" th:src="@{/images/info/b_5.gif}" width="98" height="33" /><img src="images/b_6.gif" th:src="@{/images/info/b_6.gif}" width="98" height="33" />
+        </div>
+    </div>
+</div>
+<script src="js/jquery-3.3.1.js" th:src="@{/js/web_page/jquery-2.1.4.min.js}"></script>
+<script>
+    $(function () {
+        var i = 3;
+        $(".msg_p").html("您的密码修改成功！" +
+            "<span style='color: rgb(122,199,84);'>"+i+"秒后为您跳转至登录页...</span>");
+        var mytime = setInterval(function () {
+            i -=1 ;
+            $(".msg_p").html("您的密码修改成功！" +
+                "<span style='color: rgb(122,199,84);'>"+i+"秒后为您跳转至登录页...</span>");
+            if(i == 0){
+                clearInterval(mytime);
+                window.location.href = "webLogin";
+            }
+        },1000)
+    })
+</script>
+</body>
+</html>

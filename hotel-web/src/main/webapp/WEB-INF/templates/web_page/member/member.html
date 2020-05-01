@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link th:href="@{/css/web_page/bootstrap.css}" rel="stylesheet" type="text/css" media="all">
+    <link th:href="@{/css/web_page/style.css}" rel="stylesheet" type="text/css" media="all"/>
+    <link th:href="@{/css/web_page/style1.css}" rel="stylesheet" type="text/css" media="all"/>
+    <link th:href="@{/css/web_page/animate.css}" rel="stylesheet" type="text/css" media="all">
+    <link type="text/css" rel="stylesheet" href="css/style6.css" th:href="@{/css/web_page/style6.css}"/>
+    <!--[if IE 6]>
+    <script type="text/javascript">
+        EvPNG.fix('div, ul, img, li, input, a');
+    </script>
+    <![endif]-->
+
+    <script src="js/jquery-3.3.1.js" th:src="@{/js/web_page/jquery-2.1.4.min.js}"></script>
+    <script type="text/javascript" src="js/iepng.js" th:src="@{/js/web_page/iepng.js}"></script>
+    <script type="text/javascript" src="js/menu.js" th:src="@{/js/web_page/menu.js}"></script>
+    <script type="text/javascript" src="js/menu.js" th:src="@{/js/web_page/select.js}"></script>
+    <script th:src="@{/lib/layui/layui.js}"></script>
+
+
+    <title>Mr Hotels - 个人中心</title>
+    <style>
+        #isVip_span:hover, #getScore:hover, #yes_vip:hover {
+            cursor: pointer;
+            color: red;
+        }
+
+        #isVip_span, #getScore, #yes_vip {
+            color: #00ACEE;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<!--Begin Header Begin-->
+<div class="m_top_bg">
+    <div class="top">
+        <div class="m_logo" style="width: 180px">
+            <a href="" th:href="@{/initPage}"
+               style="font-size:34px;font-weight: bold;line-height:58px;color:#FFF;margin-left: 5px;">
+                Mr Hotels
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<div class=" i_bg bg_color">
+    <!--Begin 用户中心 Begin -->
+    <div class="m_content">
+        <div class="m_left">
+            <div class="left_n">管理中心</div>
+            <div class="left_m">
+                <div class="left_m_t t_bg2">会员中心</div>
+                <ul>
+                    <li><a href="member_safe.html" th:href="@{memberIndexPage}" class="now">用户信息</a></li>
+                    <li><a href="member_safe.html" th:href="@{memberSafe}">账户安全</a></li>
+                    <li><a href="member_order.html" th:href="@{memberOrder}">我的订单</a></li>
+                    <li><a href="#" th:href="@{memberComments}">我的评论</a></li>
+                    <li><a href="member_safe.html" th:href="@{/initPage}">返回首页</a></li>
+                    <li><a href="member_safe.html" th:href="@{/webLoginOut}">退出登录</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="m_right" style="min-height: 500px;">
+            <div class="m_des">
+                <table border="0" style="width:870px; line-height:22px;" cellspacing="0" cellpadding="0">
+                    <tr valign="top">
+                        <td width="115"><img th:src="@{/images/easybuy/user.jpg}" width="90" height="90"/></td>
+                        <td>
+                            <div class="m_user" style="font-size:18px;margin-bottom: 8px;">
+                                [(${session.clientUser.name})]
+                            </div>
+                            <p>
+                                等级：<span style="color: red"
+                                         th:text="${session.clientUser.isVip == 0?'普通用户':'正式会员'}"></span>
+                                <br/>
+                                <span id="getScore">充值余额</span><br>
+                                <span id="yes_vip" th:if="${session.clientUser.isVip == 0}">成为会员</span>
+                                <span id="isVip_span" th:if="${session.clientUser.isVip == 0}">什么是会员?</span>
+                                <span id="isVip_span" th:if="${session.clientUser.isVip == 1}">会员介绍</span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
+            <div class="mem_t">账号信息</div>
+            <table border="0" class="acc_tab" style="width:870px;" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td class="td_l">会员姓名：</td>
+                    <td th:text="${session.clientUser.name}">12345678</td>
+                </tr>
+                <tr>
+                    <td class="td_l b_none" style="border-bottom: 1px dotted #b6b6b6;">身份证号：</td>
+                    <td th:text="${session.clientUser.idCard}" id="td_idCard">522124***********8</td>
+                </tr>
+                <tr>
+                    <td class="td_l b_none" style="border-bottom: 1px dotted #b6b6b6;">电 话：</td>
+                    <td th:text="${session.clientUser.phone}" id="td_phone">186****1234</td>
+                </tr>
+                <tr>
+                    <td class="td_l" style="border-bottom: 1px dotted #b6b6b6;">邮 箱：</td>
+                    <td th:text="${session.clientUser.email}">*******789@qq.com</td>
+                </tr>
+                <tr style="border-bottom: 1px dotted #b6b6b6;">
+                    <td class="td_l b_none">账户余额：</td>
+                    <td th:text="${session.clientUser.balance/100+'元'}"
+                        style="border:none;"></td>
+                </tr>
+                <tr style="border-bottom: 1px dotted #b6b6b6;">
+                    <td class="td_l b_none">剩余积分：</td>
+                    <td th:text="${session.clientUser.isVip == 0?'非会员用户':session.clientUser.score+'积分'}"
+                        style="border:none;"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!--End 用户中心 End-->
+
+    <div th:frament="footer" id="footer" class="footer" style="margin-top: 16px;">
+        <div class="container">
+            <div class="footer-main">
+                <div class="col-md-3 ftr-grid wow zoomIn" data-wow-delay="0.3s">
+                    <div class="ftr-logo">
+                        <img th:src="@{/images/ftr-logo.png}" alt="">
+                    </div>
+                    <p style="font-size: 14px">
+                        Mr Hotels是私人投入巨资新建的顶级休闲会所，集餐饮、娱乐、洗浴、茶坊、客房为一体，酒店座落于山西省运城市。
+                        隐逸在城市和乡村的边缘，Mr Hotels独享着不可复制的天生静谧与悠然。
+                        一步是都市，一步是田野，酒店将竭力打造成为高档的、阳光的、尊贵的顶级休闲度假会所
+                    </p>
+                </div>
+                <div class="col-md-3 ftr-grid ftr-mid wow zoomIn" data-wow-delay="0.3s">
+                    <h3>地址</h3>
+                    <span class="ftr-line flm"> </span>
+                    <p style="font-size: 14px">山西省运城市盐湖区安逸东路108号</p>
+                    <p style="font-size: 14px">邮编：044000</p>
+                    <p style="font-size: 14px">联系电话：0359-XXXXXXX</p>
+
+                </div>
+                <div class="col-md-3 ftr-grid ftr-rit wow zoomIn" data-wow-delay="0.3s">
+                    <h3>联系我们</h3>
+                    <form>
+                        <input type="text" value="Email" onfocus="this.value = '';"
+                               onblur="if (this.value == '') {this.value = 'Email';}">
+                        <input type="submit" value="Send"/>
+                    </form>
+                    <ul class="ftr-icons">
+                        <li><a href="javascript:;"><span class="fa"> </span></a></li>
+                        <li><a href="javascript:;"><span class="tw"> </span></a></li>
+                        <li><a href="javascript:;"><span class="link"> </span></a></li>
+                        <li><a href="javascript:;"><span class="gmail"> </span></a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 ftr-grid ftr-last-gd ftr-rit wow zoomIn" data-wow-delay="0.3s">
+                    <h3>快速链接</h3>
+                    <ul class="ftr-nav" style="font-size: 1.2em;font-family: 'Hind', sans-serif;">
+                        <li><a th:href="@{/initPage}">首页</a></li>
+                        <li><a th:href="@{/room}">房间预定</a></li>
+                        <li><a th:href="@{/about}">关于我们</a></li>
+                        <li><a th:href="@{/login}">网站后台</a></li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <!--copy rights start here-->
+    <div class="copy-right" th:frament="copy-right" id="copy-right">
+        <div class="container">
+            <div class="copy-rights-main wow zoomIn" data-wow-delay="0.3s">
+                <p style="font-size: 1.25em;font-family: 'Hind', sans-serif;">Copyright &copy; 2020.Author：Mr.Wang, All
+                    rights reserved.More 仿冒/复制必究</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['layer'],
+        function () {
+            var layer = layui.layer, $ = layui.jquery;
+
+
+            $(".left_m").height($(".m_right").height() - 15);
+
+            //加密手机号
+            var phone = $("#td_phone").text();
+            var newPhone = "暂无手机号";
+            if (phone) {
+                newPhone = phone.substr(0, 3) + "****" + phone.substr(7);
+            }
+            $("#td_phone").text(newPhone);
+            //加密身份证号
+            var idCard = $("#td_idCard").text();
+            var newIdCard = "暂无身份证号";
+            if (idCard) {
+                newIdCard = idCard.substr(0, 6) + "************";
+            }
+            $("#td_idCard").text(newIdCard);
+
+            /**
+             * 点击什么是会员的提示
+             */
+            $("#isVip_span").click(function () {
+                //会员描述
+                layer.open({
+                    type: 1
+                    ,
+                    title: false //不显示标题栏
+                    ,
+                    closeBtn: false
+                    ,
+                    area: '300px;'
+                    ,
+                    shade: 0.8
+                    ,
+                    id: 'isVip' //设定一个id，防止重复弹出
+                    ,
+                    btn: ['明白了']
+                    ,
+                    btnAlign: 'c'
+                    ,
+                    moveType: 1 //拖拽模式，0或者1
+                    ,
+                    content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">' +
+                        '会员说明：<br>' +
+                        '成为会员后在您每次订房消费后（订餐除外）会获得相应的积分奖励积分达到一定数量即可获得永久性的订房折扣<br><br>' +
+                        '折扣说明：<br>1000-2000积分 = 永久9折优惠<br>2000-3000积分 = 永久8折优惠<br>3000&nbsp;&nbsp;以上积分 = 永久7.5折优惠<br><br>' +
+                        '如何成为会员？<br>个人中心中点击成为会员，只需花费100元即可永久激活会员！' +
+                        '</div>'
+
+                });
+            });
+
+            /**
+             * 成为会员
+             */
+            $("#yes_vip").click(function () {
+                layer.confirm('成为会员需要支付<span style="color: red;">¥100</span>，请确认支付！', {
+                    btn: ['确认付款', '取消付款'] //按钮
+                }, function () {
+                    //修改用户信息中的会员字段
+                    $.getJSON(
+                        'updateClientIsVip'
+                        , function (data) {
+                            if (data.result == "success") {
+                                layer.confirm("支付成功！恭喜您已解锁会员！", {
+                                    btn: ['好的']
+                                    , icon:6
+                                    , yes: function () {
+                                        window.location.reload();
+                                    }
+                                });
+                            } else {
+                                layer.confirm(data.msg, {
+                                    btn: ['好的']
+                                    , icon:5
+                                    , anim:6
+                                    , yes: function () {
+                                        window.location.reload();
+                                    }
+                                });
+                            }
+                        }
+                    )
+                });
+            });
+
+
+            /**
+             * 余额充值
+             */
+            $("#getScore").click(function () {
+                layer.open({
+                    type: 2,
+                    title: '账户余额充值',
+                    shadeClose: true,
+                    shade: 0.5,
+                    maxmin: false,
+                    area: ['400px', '300px'],
+                    content: 'skipRechargeMoney'
+                });
+            });
+
+        });
+</script>
+
+</body>
+
+
+<!--[if IE 6]>
+<script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+</html>
