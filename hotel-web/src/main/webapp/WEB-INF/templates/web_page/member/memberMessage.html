@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <link th:href="@{/css/web_page/bootstrap.css}" rel="stylesheet" type="text/css" media="all">
+  <link th:href="@{/css/web_page/style.css}" rel="stylesheet" type="text/css" media="all"/>
+  <link th:href="@{/css/web_page/style1.css}" rel="stylesheet" type="text/css" media="all"/>
+  <link th:href="@{/css/web_page/animate.css}" rel="stylesheet" type="text/css" media="all">
+  <link type="text/css" rel="stylesheet" href="css/style6.css" th:href="@{/css/web_page/style6.css}"/>
+  <!--[if IE 6]>
+  <script type="text/javascript">
+    EvPNG.fix('div, ul, img, li, input, a');
+  </script>
+  <![endif]-->
+
+  <script src="js/jquery-3.3.1.js" th:src="@{/js/web_page/jquery-2.1.4.min.js}"></script>
+  <script type="text/javascript" src="js/iepng.js" th:src="@{/js/web_page/iepng.js}"></script>
+  <script type="text/javascript" src="js/menu.js" th:src="@{/js/web_page/menu.js}"></script>
+  <script type="text/javascript" src="js/menu.js" th:src="@{/js/web_page/select.js}"></script>
+
+
+  <title>Mr Hotels - 个人中心</title>
+</head>
+<body>
+<!--Begin Header Begin-->
+<div class="m_top_bg">
+  <div class="top">
+    <div class="m_logo" style="width: 180px">
+      <a href="" th:href="@{/initPage}" style="font-size:34px;font-weight: bold;line-height:58px;color:#FFF;">
+        Mr Hotels
+      </a>
+    </div>
+  </div>
+</div>
+<!--End Header End-->
+<div class="i_bg bg_color">
+  <!--Begin 用户中心 Begin -->
+  <div class="m_content">
+
+    <div class="m_left">
+      <div class="left_n">管理中心</div>
+      <div class="left_m">
+        <div class="left_m_t t_bg2">会员中心</div>
+        <ul>
+          <li><a href="member_safe.html" th:href="@{memberIndexPage}">用户信息</a></li>
+          <li><a href="member_safe.html" th:href="@{memberSafe}" class="now">账户安全</a></li>
+          <li><a href="member_order.html" th:href="@{memberOrder}">我的订单</a></li>
+          <li><a href="#" th:href="@{memberComments}">我的评论</a></li>
+          <li><a href="#member_safe.html" th:href="@{memberMessage}">留言板</a></li>
+          <li><a href="member_safe.html" th:href="@{/initPage}">返回首页</a></li>
+          <li><a href="member_safe.html" th:href="@{/webLoginOut}">退出登录</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="m_right">
+      <p></p>
+      <div class="mem_tit">留言板</div>
+
+      <!--修改手机号-->
+      <div class="m_des" th:if="${session.clientUser.phone != null}">
+        <form id="editPhone">
+          <input type="hidden" name="oldPhoneVal" th:value="${session.clientUser.phone}">
+          <table border="0" style="width:880px;" cellspacing="0" cellpadding="0">
+            <tr height="45">
+              <td width="80" align="right">原手机 &nbsp; &nbsp;</td>
+              <td><input type="text" value="" name="oldPhone" class="add_ipt" style="width:180px;"/>&nbsp; <font
+                color="#ff4e00">*</font></td>
+            </tr>
+            <tr height="45">
+              <td align="right">新手机 &nbsp; &nbsp;</td>
+              <td><input type="text" value="" name="phone" class="add_ipt" style="width:180px;"/>&nbsp; <font
+                color="#ff4e00">*</font></td>
+            </tr>
+            <tr height="50">
+              <td>&nbsp;</td>
+              <td>
+                <p style="color: red" id="phoneMsg"></p>
+                <input type="button" id="btnPhone" value="确认修改" class="btn_tj"/>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+
+      <!--修改邮箱-->
+      <div class="m_des">
+        <form id="editEmail" th:if="${session.clientUser.email != null}">
+          <input type="hidden" name="oldEmailVal" th:value="${session.clientUser.email}">
+          <table border="0" style="width:880px;" cellspacing="0" cellpadding="0">
+            <tr height="45">
+              <td width="80" align="right">原邮箱 &nbsp; &nbsp;</td>
+              <td><input type="text" value="" name="oldEmail" class="add_ipt" style="width:180px;"/>&nbsp; <font
+                color="#ff4e00">*</font></td>
+            </tr>
+            <tr height="45">
+              <td align="right">新邮箱 &nbsp; &nbsp;</td>
+              <td><input type="text" value="" name="email" class="add_ipt" style="width:180px;"/>&nbsp; <font
+                color="#ff4e00">*</font></td>
+            </tr>
+            <tr height="50">
+              <td>&nbsp;</td>
+              <td>
+                <p style="color: red" id="emailMsg"></p>
+                <input type="button" id="btnEmail" value="确认修改" class="btn_tj"/>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+
+      <!--修改密码-->
+      <div class="m_des">
+        <form id="editPassword">
+          <input type="hidden" name="oldPwdVal" th:value="${session.clientUser.password}">
+          <table border="0" style="width:880px;" cellspacing="0" cellpadding="0">
+            <tr height="45">
+              <td width="80" align="right">原密码 &nbsp; &nbsp;</td>
+              <td><input type="password" value="" class="add_ipt" name="oldPassword"
+                         style="width:180px;"/>&nbsp; <font color="#ff4e00">*</font></td>
+            </tr>
+            <tr height="45">
+              <td align="right">新密码 &nbsp; &nbsp;</td>
+              <td><input type="password" value="" class="add_ipt" name="password" style="width:180px;"/>&nbsp;
+                <font color="#ff4e00">*</font></td>
+            </tr>
+            <tr height="45">
+              <td align="right">确认密码 &nbsp; &nbsp;</td>
+              <td><input type="password" value="" class="add_ipt" name="rePassword" style="width:180px;"/>&nbsp;
+                <font color="#ff4e00">*</font></td>
+            </tr>
+            <tr height="50">
+              <td>&nbsp;</td>
+              <td>
+                <p style="color: red" id="pwdMsg"></p>
+                <input type="button" id="btnPwd" value="确认修改" class="btn_tj"/>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!--End 用户中心 End-->
+
+  <!--Begin Footer Begin -->
+  <div th:frament="footer" id="footer" class="footer" style="margin-top: 16px;">
+    <div class="container">
+      <div class="footer-main">
+        <div class="col-md-3 ftr-grid wow zoomIn" data-wow-delay="0.3s">
+          <div class="ftr-logo">
+            <img th:src="@{/images/ftr-logo.png}" alt="">
+          </div>
+          <p style="font-size: 14px">
+            Mr Hotels是私人定制试的场地预定系统。
+            无论是隐逸在城市和乡村的边缘场地，还是星级酒店，会展中心，度假村，咖啡厅，餐厅，培训中心，会所，艺术中心，酒吧，剧院，体育馆，其他场地，Mr Hotels都能帮你找到符合您的圣地。
+            一步是都市，一步是田野，一步是您梦想的家园。
+          </p>
+        </div>
+        <div class="col-md-3 ftr-grid ftr-mid wow zoomIn" data-wow-delay="0.3s">
+          <h3>地址</h3>
+          <span class="ftr-line flm"> </span>
+          <!--<p style="font-size: 14px">山西省运城市盐湖区安逸东路108号</p>-->
+          <p style="font-size: 14px">邮编：044000</p>
+          <p style="font-size: 14px">联系电话：0359-XXXXXXX</p>
+
+        </div>
+        <div class="col-md-3 ftr-grid ftr-rit wow zoomIn" data-wow-delay="0.3s">
+          <h3>联系我们</h3>
+          <form>
+            <input type="text" value="Email" onfocus="this.value = '';"
+                   onblur="if (this.value == '') {this.value = 'Email';}">
+            <input type="submit" value="Send"/>
+          </form>
+          <ul class="ftr-icons">
+            <li><a href="javascript:;"><span class="fa"> </span></a></li>
+            <li><a href="javascript:;"><span class="tw"> </span></a></li>
+            <li><a href="javascript:;"><span class="link"> </span></a></li>
+            <li><a href="javascript:;"><span class="gmail"> </span></a></li>
+          </ul>
+        </div>
+        <div class="col-md-3 ftr-grid ftr-last-gd ftr-rit wow zoomIn" data-wow-delay="0.3s">
+          <h3>快速链接</h3>
+          <ul class="ftr-nav" style="font-size: 1.2em;font-family: 'Hind', sans-serif;">
+            <li><a th:href="@{/initPage}">首页</a></li>
+            <li><a th:href="@{/room}">场地预定</a></li>
+            <li><a th:href="@{/about}">关于我们</a></li>
+            <li><a th:href="@{/login}">网站后台</a></li>
+          </ul>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="copy-right" th:frament="copy-right" id="copy-right">
+    <div class="container">
+      <div class="copy-rights-main wow zoomIn" data-wow-delay="0.3s">
+        <p style="font-size: 1.25em;font-family: 'Hind', sans-serif;">Copyright &copy; 2020.Author：Mr.95H, All
+          rights reserved.More 仿冒/复制必究</p>
+      </div>
+    </div>
+  </div>
+  <!--End Footer End -->
+
+</div>
+
+<script>
+
+  jQuery(function ($) {
+    //侧边栏与内容高度一致
+    $(".left_m").height($(".m_right").height() - 15);
+
+    //为所有表单绑定单击事件，单击清空表单中的提示消息
+    $("input[type='text'],input[type='password']").focus(function () {
+      clearMsg($(this).parent().parent().parent());
+    });
+
+    //绑定修改手机号按钮
+    $("#btnPhone").click(function () {
+      //获取输入的原手机号
+      var oldPhone = $("input[name='oldPhone']").val();
+      //获取新手机号
+      var newPhone = $("input[name='phone']").val();
+      //验证手机号
+      var verifyResult = verifyPhone(newPhone, oldPhone);
+      if(verifyResult == 0){      //验证通过
+        //获取表单中的全部数据
+        var getData = $("#editPhone").serialize();
+        $.getJSON(
+          'editClientInfo?'+getData,
+          function (data) {
+            if(data.result == "success"){
+              var i = 3;
+              $("#phoneMsg").html("<span style='color: #0b0b0b'>您的手机号修改成功！需要重新登录账户！</span>" +
+                "<span style='color: rgb(122,199,84);'>"+i+"秒后为您跳转至登录页...</span>");
+              var mytime = setInterval(function () {
+                i -=1 ;
+                $("#phoneMsg").html("<span style='color: #0b0b0b'>您的手机号修改成功！需要重新登录账户！</span>" +
+                  "<span style='color: rgb(122,199,84);'>"+i+"秒后为您跳转至登录页...</span>");
+                if(i == 0){
+                  clearInterval(mytime);
+                  window.location.href = "successSkip";
+                }
+              },1000)
+            }else{
+              $("#phoneMsg").text("手机号修改失败，请稍后再试！");
+            }
+          }
+        )
+      }else if(verifyResult == 3){
+        $("#phoneMsg").text("输入信息不完整！");
+      }else if(verifyResult == 2){
+        $("#phoneMsg").text("输入的原手机号不匹配！");
+      }else if(verifyResult == 1){
+        $("#phoneMsg").text("输入的手机号格式有误！");
+      }else if(verifyResult == 4){
+        $("#phoneMsg").text("新手机号不可与旧手机号一致！");
+      }
+    });
+
+    //绑定修改邮箱按钮
+    $("#btnEmail").click(function () {
+      //获取输入的原邮箱
+      var oldEmail = $("input[name='oldEmail']").val();
+      //获取输入的新邮箱
+      var newEmail = $("input[name='email']").val();
+      //验证邮箱
+      var verifyResult = verifyEmail(newEmail, oldEmail);
+      if(verifyResult == 0) {      //验证通过
+        //获取表单中的全部数据
+        var getData = $("#editEmail").serialize();
+        $.getJSON(
+          'editClientInfo?' + getData,
+          function (data) {
+            if (data.result == "success") {
+              var i = 3;
+              $("#emailMsg").html("<span style='color: #0b0b0b'>您的邮箱号修改成功！需要重新登录账户！</span>" +
+                "<span style='color: rgb(122,199,84);'>" + i + "秒后为您跳转至登录页...</span>");
+              var mytime = setInterval(function () {
+                i -= 1;
+                $("#emailMsg").html("<span style='color: #0b0b0b'>您的邮箱号修改成功！需要重新登录账户！</span>" +
+                  "<span style='color: rgb(122,199,84);'>" + i + "秒后为您跳转至登录页...</span>");
+                if (i == 0) {
+                  clearInterval(mytime);
+                  window.location.href = "successSkip";
+                }
+              }, 1000)
+            } else {
+              $("#emailMsg").text("邮箱号修改失败，请稍后再试！");
+            }
+
+          }
+        );
+      }else if(verifyResult == 3){
+        $("#emailMsg").text("输入信息不完整！");
+      }else if(verifyResult == 2){
+        $("#emailMsg").text("输入的原邮箱号不匹配！");
+      }else if(verifyResult == 1){
+        $("#emailMsg").text("输入的邮箱号格式有误！");
+      }else if(verifyResult == 4){
+        $("#emailMsg").text("新邮箱号不可与旧邮箱号一致！");
+      }
+    });
+
+    //绑定修改密码按钮
+    $("#btnPwd").click(function (){
+      //获取输入的原密码
+      var oldPwd = $("input[name='oldPassword']").val();
+      //获取输入的新密码
+      var newPwd = $("input[name='password']").val();
+      //获取输入的重复密码
+      var rePwd = $("input[name='rePassword']").val();
+      //验证密码
+      var verifyResult = verifyPwd(oldPwd, newPwd, rePwd);
+      if(verifyResult == 0){      //验证通过
+        //获取表单中的全部数据
+        var getData = $("#editPassword").serialize();
+        $.getJSON(
+          'editClientInfo?' + getData,
+          function (data) {
+            if (data.result == "success") {
+              var i = 3;
+              $("#pwdMsg").html("<span style='color: #0b0b0b'>您的密码修改成功！需要重新登录账户！</span>" +
+                "<span style='color: rgb(122,199,84);'>" + i + "秒后为您跳转至登录页...</span>");
+              var mytime = setInterval(function () {
+                i -= 1;
+                $("#pwdMsg").html("<span style='color: #0b0b0b'>您的密码修改成功！需要重新登录账户！</span>" +
+                  "<span style='color: rgb(122,199,84);'>" + i + "秒后为您跳转至登录页...</span>");
+                if (i == 0) {
+                  clearInterval(mytime);
+                  window.location.href = "successSkip";
+                }
+              }, 1000)
+            } else {
+              $("#pwdMsg").text("密码修改失败，请稍后再试！");
+            }
+
+          }
+        );
+      }else if(verifyResult == 4){
+        $("#pwdMsg").text("输入信息不完整！");
+      }else if(verifyResult == 3){
+        $("#pwdMsg").text("输入的密码格式有误！");
+      }else if(verifyResult == 2){
+        $("#pwdMsg").text("两次输入的密码不一致！");
+      }else if(verifyResult == 1){
+        $("#pwdMsg").text("输入的原密码不匹配！");
+      }else if(verifyResult == 5){
+        $("#pwdMsg").text("新密码不可与旧密码一致！");
+      }
+    });
+
+    //验证手机号
+    function verifyPhone(phone, oldPhone) {
+      var regPhone = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
+      if(phone.trim().length == 0 || oldPhone.trim().length == 0){    //输入空值
+        return 3;
+      }
+      if(oldPhone != $("input[name='oldPhoneVal']").val()){   //原手机号不匹配
+        return 2;
+      }
+      if(phone == $("input[name='oldPhoneVal']").val()){   //新手号与原手机号一致
+        return 4;
+      }
+      if (!regPhone.test(phone)) {    //手机号格式不正确
+        return 1;
+      }
+      return 0;
+    }
+
+    //验证邮箱
+    function verifyEmail(email, oldEmail) {
+      var regEmail = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
+      if(oldEmail.trim().length == 0 || email.trim().length == 0){    //输入空值
+        return 3;
+      }
+      if(oldEmail != $("input[name='oldEmailVal']").val()){     //原邮箱不匹配
+        return 2;
+      }
+      if(email == $("input[name='oldEmailVal']").val()){     //新邮箱与原邮箱一致
+        return 4;
+      }
+      if (!regEmail.test(email)) {        //邮箱格式有误
+        return 1;
+      }
+      return 0;
+    }
+
+    //验证密码
+    function verifyPwd(oldPwd, newPwd, rePwd) {
+      var regPwd = /^[\w_-]{6,16}$/;
+      if(oldPwd.trim().length == 0 || newPwd.trim().length == 0 || rePwd.trim().length == 0){    //输入空值
+        return 4;
+      }
+      if (oldPwd != $("input[name='oldPwdVal']").val()) {      //原密码不匹配
+        return 1;
+      } else if (newPwd != rePwd) {                //两次密码输入不一致
+        return 2;
+      } else if (newPwd == oldPwd) {            //新密码与旧密码设置一致
+        return 5;
+      } else if (!regPwd.test(newPwd)) {        //新密码格式有误
+        return 3;
+      }
+      return 0;
+    }
+
+    /**
+     * 清空显示的消息
+     * @param t
+     */
+    function clearMsg(t){
+      t.find("p").text('');
+    }
+  })
+
+</script>
+
+</body>
+
+
+<!--[if IE 6]>
+<script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+</html>

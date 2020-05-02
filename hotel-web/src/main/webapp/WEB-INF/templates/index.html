@@ -2,7 +2,7 @@
 <html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
-        <title>酒店管理后台系统</title>
+        <title>场地管理后台系统</title>
         <meta name="renderer" content="webkit|ie-comp|ie-stand">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -28,7 +28,7 @@
         <!-- 顶部开始 -->
         <div class="container">
             <div class="logo">
-                <a href="./index.html">酒店管理后台操作系统</a></div>
+                <a href="./index.html">场地管理后台操作系统</a></div>
             <div class="left_open">
                 <a><i title="展开左侧栏" class="iconfont">&#xe699;</i></a>
             </div>
@@ -57,33 +57,28 @@
                     <li>
                         <a href="javascript:;">
                             <i class="iconfont left-nav-li" lay-tips="会员管理">&#xe6b8;</i>
-                            <cite>客房管理</cite>
+                            <cite>场地管理</cite>
                             <i class="iconfont nav_right">&#xe697;</i></a>
                         <ul class="sub-menu">
                             <li>
                                 <a onclick="xadmin.add_tab('客房类型','openHouseType')">
                                     <i class="iconfont">&#xe6a7;</i>
-                                    <cite>客房类型</cite></a>
+                                    <cite>场地类型</cite></a>
                             </li>
                             <li>
                                 <a onclick="xadmin.add_tab('客房信息','openHouse')">
                                     <i class="iconfont">&#xe6a7;</i>
-                                    <cite>客房信息</cite></a>
+                                    <cite>场地信息</cite></a>
                             </li>
                             <li>
                                 <a onclick="xadmin.add_tab('客房订单','openOrder')">
                                     <i class="iconfont">&#xe6a7;</i>
-                                    <cite>客房订单</cite></a>
-                            </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('餐品订单','openProductOrder')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>餐品订单</cite></a>
+                                    <cite>场地订单</cite></a>
                             </li>
                             <li>
                                 <a onclick="xadmin.add_tab('退房操作','openCheckOut')">
                                     <i class="iconfont">&#xe6a7;</i>
-                                    <cite>退房操作</cite></a>
+                                    <cite>退定操作</cite></a>
                             </li>
 
                         </ul>
@@ -110,42 +105,6 @@
                     </li>
                     <li>
                         <a href="javascript:;">
-                            <i class="iconfont left-nav-li" lay-tips="后厨管理">&#xe756;</i>
-                            <cite>后厨管理</cite>
-                            <i class="iconfont nav_right">&#xe697;</i></a>
-                        <ul class="sub-menu">
-                            <li>
-                                <a onclick="xadmin.add_tab('菜品列表','openDishes')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>菜品列表</cite></a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="javascript:;">
-                            <i class="iconfont left-nav-li" lay-tips="库存管理">&#xe6b4;</i>
-                            <cite>库存管理</cite>
-                            <i class="iconfont nav_right">&#xe697;</i></a>
-                        <ul class="sub-menu">
-                            <li>
-                                <a onclick="xadmin.add_tab('商品列表','openProduct')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>商品列表</cite></a>
-                            </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('商品类型','openProductType')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>商品类型</cite></a>
-                            </li>
-                            <li>
-                                <a onclick="xadmin.add_tab('商品采购','openPurchase')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>商品采购</cite></a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="javascript:;">
                             <i class="iconfont left-nav-li" lay-tips="报表">&#xe723;</i>
                             <cite>报表</cite>
                             <i class="iconfont nav_right">&#xe697;</i></a>
@@ -154,19 +113,6 @@
                                 <a onclick="xadmin.add_tab('营业日报表','openBusiness')">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>营业报表</cite></a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="javascript:;">
-                            <i class="iconfont left-nav-li" lay-tips="连锁管理">&#xe828;</i>
-                            <cite>连锁管理</cite>
-                            <i class="iconfont nav_right">&#xe697;</i></a>
-                        <ul class="sub-menu">
-                            <li>
-                                <a onclick="xadmin.add_tab('连锁管理','openMultiple')">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>连锁管理</cite></a>
                             </li>
                         </ul>
                     </li>
