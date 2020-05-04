@@ -61,22 +61,22 @@
                             <i class="iconfont nav_right">&#xe697;</i></a>
                         <ul class="sub-menu">
                             <li>
-                                <a onclick="xadmin.add_tab('客房类型','openHouseType')">
+                                <a onclick="xadmin.add_tab('场地类型','openHouseType')">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>场地类型</cite></a>
                             </li>
                             <li>
-                                <a onclick="xadmin.add_tab('客房信息','openHouse')">
+                                <a onclick="xadmin.add_tab('场地信息','openHouse')">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>场地信息</cite></a>
                             </li>
                             <li>
-                                <a onclick="xadmin.add_tab('客房订单','openOrder')">
+                                <a onclick="xadmin.add_tab('场地订单','openOrder')">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>场地订单</cite></a>
                             </li>
                             <li>
-                                <a onclick="xadmin.add_tab('退房操作','openCheckOut')">
+                                <a onclick="xadmin.add_tab('退定操作','openCheckOut')">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>退定操作</cite></a>
                             </li>
@@ -85,21 +85,21 @@
                     </li>
                     <li>
                         <a href="javascript:;">
-                            <i class="iconfont left-nav-li" lay-tips="客户管理">&#xe6af;</i>
+                            <i class="iconfont left-nav-li" lay-tips="用户管理">&#xe6af;</i>
                             <cite>用户管理</cite>
                             <i class="iconfont nav_right">&#xe697;</i></a>
                         <ul class="sub-menu">
                             <!--前台客户管理-->
                             <li>
-                                <a onclick="xadmin.add_tab('客户列表','openClient')">
+                                <a onclick="xadmin.add_tab('用户列表','openClient')">
                                     <i class="iconfont">&#xe6a7;</i>
-                                    <cite>客户列表</cite></a>
+                                    <cite>用户列表</cite></a>
                             </li>
                             <!--后台用户管理-->
                             <li th:if="${session.employee.powerId == 0}">
-                                <a onclick="xadmin.add_tab('收银员工管理','openEmployee')">
+                                <a onclick="xadmin.add_tab('员工管理','openEmployee')">
                                     <i class="iconfont">&#xe6a7;</i>
-                                    <cite>收银员工管理</cite></a>
+                                    <cite>员工管理</cite></a>
                             </li>
                         </ul>
                     </li>
@@ -126,12 +126,12 @@
                 <ul class="layui-tab-title">
                     <li class="home">
                         <i class="layui-icon">&#xe68e;</i>首页</li></ul>
-                <div class="layui-unselect layui-form-select layui-form-selected" id="tab_right">
-                    <dl>
-                        <dd data-type="this">关闭当前</dd>
-                        <dd data-type="other">关闭其它</dd>
-                        <dd data-type="all">关闭全部</dd></dl>
-                </div>
+                    <div class="layui-unselect layui-form-select layui-form-selected" id="tab_right">
+                        <dl>
+                            <dd data-type="this">关闭当前</dd>
+                            <dd data-type="other">关闭其它</dd>
+                            <dd data-type="all">关闭全部</dd></dl>
+                    </div>
                 <div class="layui-tab-content">
 
                 </div>
