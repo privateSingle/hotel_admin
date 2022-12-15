@@ -16,7 +16,7 @@
 
     <!--统一定义版本号-->
     <properties>
-        <spring-webmvc.version>5.1.5.RELEASE</spring-webmvc.version>
+        <spring-webmvc.version>5.2.20.RELEASE</spring-webmvc.version>
         <log4j-web.version>2.11.0</log4j-web.version>
         <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
         <jsp-api.version>2.1</jsp-api.version>
